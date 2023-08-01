@@ -2,7 +2,6 @@ package com.rappytv.chat.events;
 
 import com.rappytv.chat.Chat;
 import com.rappytv.chat.commands.ChatCommand;
-import com.rappytv.chat.util.LuckPermsUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -15,12 +14,12 @@ import java.util.regex.Pattern;
 public class PlayerChatListener implements Listener {
 
     private final Chat plugin;
-    private static final Pattern color = Pattern.compile("(?i)&(0-9A-FR)");
-    private static final Pattern magic = Pattern.compile("(?i)&(K)");
-    private static final Pattern bold = Pattern.compile("(?i)&(L)");
-    private static final Pattern strikethrough = Pattern.compile("(?i)&(M)");
-    private static final Pattern underline = Pattern.compile("(?i)&(N)");
-    private static final Pattern italic = Pattern.compile("(?i)&(O)");
+    private static final Pattern color = Pattern.compile("(?i)&([0-9A-FR])");
+    private static final Pattern magic = Pattern.compile("(?i)&([K])");
+    private static final Pattern bold = Pattern.compile("(?i)&([L])");
+    private static final Pattern strikethrough = Pattern.compile("(?i)&([M])");
+    private static final Pattern underline = Pattern.compile("(?i)&([N])");
+    private static final Pattern italic = Pattern.compile("(?i)&([O])");
 
     public PlayerChatListener(Chat plugin) {
         this.plugin = plugin;
@@ -68,23 +67,23 @@ public class PlayerChatListener implements Listener {
         }
     }
 
-    public static String translateColorCodes(Player p, String message) {
-        if(p.hasPermission("chat.format.colors")) {
+    public static String translateColorCodes(Player player, String message) {
+        if(player.hasPermission("chat.format.colors")) {
             message = color.matcher(message).replaceAll("§$1");
         }
-        if(p.hasPermission("chat.format.bold")) {
+        if(player.hasPermission("chat.format.bold")) {
             message = bold.matcher(message).replaceAll("§$1");
         }
-        if(p.hasPermission("chat.format.italic")) {
+        if(player.hasPermission("chat.format.italic")) {
             message = italic.matcher(message).replaceAll("§$1");
         }
-        if(p.hasPermission("chat.format.underline")) {
+        if(player.hasPermission("chat.format.underline")) {
             message = underline.matcher(message).replaceAll("§$1");
         }
-        if(p.hasPermission("chat.format.strikethrough")) {
+        if(player.hasPermission("chat.format.strikethrough")) {
             message = strikethrough.matcher(message).replaceAll("§$1");
         }
-        if(p.hasPermission("chat.format.magic")) {
+        if(player.hasPermission("chat.format.magic")) {
             message = magic.matcher(message).replaceAll("§$1");
         }
         return message;
