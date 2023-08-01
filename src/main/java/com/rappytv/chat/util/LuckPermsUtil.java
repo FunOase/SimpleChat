@@ -12,7 +12,7 @@ import org.bukkit.scoreboard.Team;
 
 import java.util.Iterator;
 
-@SuppressWarnings({"ConstantConditions", "deprecation"})
+@SuppressWarnings({"ConstantConditions"})
 public class LuckPermsUtil {
 
     private final LuckPerms api;
@@ -51,8 +51,7 @@ public class LuckPermsUtil {
         });
         while(players.hasNext()) {
             target = players.next();
-            User user = getUser(target);
-            teamId = (Chat.maxWeight - (getPrimaryGroup(target).getWeight().isPresent() ? getPrimaryGroup(target).getWeight().getAsInt() : 0)) + user.getIdentifier().getName();
+            teamId = getTeamId(target);
             team = sb.getTeam(teamId);
             if(team == null) {
                 team = sb.registerNewTeam(teamId);
@@ -69,8 +68,7 @@ public class LuckPermsUtil {
             target = players.next();
             if (target != player) {
                 sb = target.getScoreboard();
-                User user = getUser(player);
-                teamId = (Chat.maxWeight - (getPrimaryGroup(player).getWeight().isPresent() ? getPrimaryGroup(player).getWeight().getAsInt() : 0)) + user.getIdentifier().getName();
+                teamId = getTeamId(player);
                 team = sb.getTeam(teamId);
                 if(team == null) {
                     team = sb.registerNewTeam(teamId);
@@ -81,5 +79,16 @@ public class LuckPermsUtil {
                 team.addEntry(player.getName());
             }
         }
+    }
+
+    private String getTeamId(Player player) {
+        int maxWeight = Chat.maxWeight;
+        int maxWeightLength = Integer.toString(maxWeight).length();
+        int weight = getPrimaryGroup(player).getWeight().isPresent() ? getPrimaryGroup(player).getWeight().getAsInt() : 0;
+
+        String id = ("0000" + (maxWeight - weight));
+        String slicedId = id.substring(id.length() - maxWeightLength);
+
+        return String.format("%s_%s", slicedId, player.getUniqueId());
     }
 }
