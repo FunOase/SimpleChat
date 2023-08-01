@@ -43,42 +43,5 @@ public class PlayerConverter {
         team.setPrefix(getChatPrefix(player) + " §8| ");
         team.setColor(ChatColor.GRAY);
         team.addPlayer(player);
-
-//        Iterator<? extends Player> players = Bukkit.getOnlinePlayers().iterator();
-//
-//        Player target;
-//        Scoreboard sb;
-//        String team;
-//        while(players.hasNext()) {
-//            target = players.next();
-//            sb = player.getScoreboard();
-//            User user = getUser(target);
-//            team = (getPrimaryGroup(target).getWeight().isPresent() ? getPrimaryGroup(target).getWeight().getAsInt() : 0) + user.getIdentifier().getName();
-//            if(sb.getTeam(team) == null) {
-//                sb.registerNewTeam(team);
-//            }
-//
-//            sb.getTeam(team).setPrefix(getPrefix(target));
-//            sb.getTeam(team).color(NamedTextColor.GRAY);
-//            sb.getTeam(team).addPlayer(target);
-//        }
-//
-//        players = Bukkit.getOnlinePlayers().iterator();
-//
-//        while(players.hasNext()) {
-//            target = players.next();
-//            if (target != player) {
-//                sb = target.getScoreboard();
-//                User user = getUser(player);
-//                team = (getPrimaryGroup(player).getWeight().isPresent() ? getPrimaryGroup(player).getWeight().getAsInt() : 0) + user.getIdentifier().getName();
-//                if(sb.getTeam(team) == null) {
-//                    sb.registerNewTeam(team);
-//                }
-//
-//                sb.getTeam(team).setPrefix(getPrefix(player));
-//                sb.getTeam(team).color(NamedTextColor.GRAY);
-//                sb.getTeam(team).addPlayer(player);
-//            }
-//        }
     }
 }
