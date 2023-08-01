@@ -42,7 +42,7 @@ public class PlayerConverter {
             team = sb.registerNewTeam(teamId);
         }
 
-        team.setPrefix(getChatPrefix(player) + " §8» ");
+        team.setPrefix(getChatPrefix(player) + " §8| ");
         team.setColor(ChatColor.GRAY);
         team.addPlayer(player);
 
