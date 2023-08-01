@@ -60,9 +60,6 @@ public class PlayerChatListener implements Listener {
         }
 
         String prefix = PlayerConverter.getChatPrefix(player);
-        if(prefix == null) {
-            prefix = "§7Spieler";
-        }
 
         if(player.hasPermission("chat.format.margin")) {
             e.setFormat("§8»\n§7" + prefix + " §8| §7" + player.getName() + " §8» §7" + translateColorCodes(player, e.getMessage()) + "\n§8»");
