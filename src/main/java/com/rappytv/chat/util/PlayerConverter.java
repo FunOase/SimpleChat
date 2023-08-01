@@ -22,7 +22,6 @@ public class PlayerConverter {
 
     public static String getChatPrefix(Player player) {
         Group group = getPrimaryGroup(player);
-        System.out.print(group.getDisplayName() + " " + group.getFriendlyName());
         if(group.getDisplayName() == null) return null;
 
         return ChatColor.translateAlternateColorCodes('&', group.getDisplayName());
@@ -36,7 +35,6 @@ public class PlayerConverter {
         });
         User user = getUser(player);
         String teamId = (Chat.maxWeight - (getPrimaryGroup(player).getWeight().isPresent() ? getPrimaryGroup(player).getWeight().getAsInt() : 0)) + "_" + user.getIdentifier().getName();
-        System.out.println(teamId);
         Team team = sb.getTeam(teamId);
         if(team == null) {
             team = sb.registerNewTeam(teamId);
