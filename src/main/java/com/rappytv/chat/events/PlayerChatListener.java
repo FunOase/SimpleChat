@@ -2,7 +2,7 @@ package com.rappytv.chat.events;
 
 import com.rappytv.chat.Chat;
 import com.rappytv.chat.commands.ChatCommand;
-import com.rappytv.chat.util.PlayerConverter;
+import com.rappytv.chat.util.LuckPermsUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -59,7 +59,7 @@ public class PlayerChatListener implements Listener {
             return;
         }
 
-        String prefix = PlayerConverter.getChatPrefix(player);
+        String prefix = plugin.getLuckPermsUtil().getChatPrefix(player);
 
         if(player.hasPermission("chat.format.margin")) {
             e.setFormat("§8»\n§7" + prefix + " §8| §7" + player.getName() + " §8» §7" + translateColorCodes(player, e.getMessage()) + "\n§8»");
