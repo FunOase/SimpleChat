@@ -1,0 +1,46 @@
+name: Chat
+version: '${project.version}'
+main: com.rappytv.chat.Chat
+api-version: 1.19
+authors: [ RappyTV ]
+depend:
+  - LuckPerms
+
+commands:
+  chat: {}
+  emoji: {}
+
+permissions:
+  chat.manage.*:
+    default: op
+    children:
+      chat.manage.enable:
+        default: op
+      chat.manage.disable:
+        default: op
+      chat.manage.bypass:
+        default: op
+
+
+  chat.format.colors:
+    default: op
+  chat.format.bold:
+    default: op
+  chat.format.italic:
+    default: op
+  chat.format.underline:
+    default: op
+  chat.format.strikethrough:
+    default: op
+  chat.format.magic:
+    default: op
+  chat.format.margin:
+    default: op
+
+  chat.emojis:
+    default: op
+  chat.emojis.toggle:
+    default: op
+
+  chat.team:
+    default: op
