@@ -9,11 +9,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PlayerChatListener implements Listener {
 
     private final Chat plugin;
+    private static final Pattern hex = Pattern.compile("#[a-fA-F0-9]{6}");
     private static final Pattern color = Pattern.compile("(?i)&([0-9A-FR])");
     private static final Pattern magic = Pattern.compile("(?i)&([K])");
     private static final Pattern bold = Pattern.compile("(?i)&([L])");
@@ -68,6 +70,14 @@ public class PlayerChatListener implements Listener {
     }
 
     public static String translateColorCodes(Player player, String message) {
+        if(player.hasPermission("chat.format.colors.hex")) {
+            Matcher match = hex.matcher(message);
+            while(match.find()) {
+                String color = message.substring(match.start(), match.end());
+                message = message.replace(color, net.md_5.bungee.api.ChatColor.of(color) + "");
+                match = hex.matcher(message);
+            }
+        }
         if(player.hasPermission("chat.format.colors")) {
             message = color.matcher(message).replaceAll("§$1");
         }

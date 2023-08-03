@@ -24,6 +24,8 @@ permissions:
 
   chat.format.colors:
     default: op
+  chat.format.colors.hex:
+    default: op
   chat.format.bold:
     default: op
   chat.format.italic:
