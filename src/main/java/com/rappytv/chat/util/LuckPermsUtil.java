@@ -1,6 +1,6 @@
 package com.rappytv.chat.util;
 
-import com.rappytv.chat.Chat;
+import com.rappytv.chat.ChatPlugin;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
@@ -82,7 +82,7 @@ public class LuckPermsUtil {
     }
 
     private String getTeamId(Player player) {
-        int maxWeight = Chat.maxWeight;
+        int maxWeight = ChatPlugin.maxWeight;
         int maxWeightLength = Integer.toString(maxWeight).length();
         int weight = getPrimaryGroup(player).getWeight().isPresent() ? getPrimaryGroup(player).getWeight().getAsInt() : 0;
 

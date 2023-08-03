@@ -1,8 +1,6 @@
 package com.rappytv.chat.events.luckperms;
 
-import com.rappytv.chat.Chat;
-import com.rappytv.chat.util.LuckPermsUtil;
-import net.luckperms.api.LuckPerms;
+import com.rappytv.chat.ChatPlugin;
 import net.luckperms.api.event.EventBus;
 import net.luckperms.api.event.user.UserDataRecalculateEvent;
 import net.luckperms.api.event.user.track.UserDemoteEvent;
@@ -15,9 +13,9 @@ import java.util.UUID;
 
 public class UpdateListener {
 
-    private final Chat plugin;
+    private final ChatPlugin plugin;
 
-    public UpdateListener(Chat plugin) {
+    public UpdateListener(ChatPlugin plugin) {
         this.plugin = plugin;
         EventBus eventBus = plugin.lp.getEventBus();
 

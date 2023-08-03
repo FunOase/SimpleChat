@@ -1,7 +1,6 @@
 package com.rappytv.chat.events;
 
-import com.rappytv.chat.Chat;
-import com.rappytv.chat.util.LuckPermsUtil;
+import com.rappytv.chat.ChatPlugin;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -9,9 +8,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class JoinListener implements Listener {
 
-    private final Chat plugin;
+    private final ChatPlugin plugin;
 
-    public JoinListener(Chat plugin) {
+    public JoinListener(ChatPlugin plugin) {
         this.plugin = plugin;
     }
 

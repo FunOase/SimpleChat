@@ -1,7 +1,7 @@
 package com.rappytv.chat.events;
 
-import com.rappytv.chat.Chat;
-import com.rappytv.chat.commands.ChatCommand;
+import com.rappytv.chat.ChatPlugin;
+import com.rappytv.chat.commands.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 public class PlayerChatListener implements Listener {
 
-    private final Chat plugin;
+    private final ChatPlugin plugin;
     private static final Pattern hex = Pattern.compile("#[a-fA-F0-9]{6}");
     private static final Pattern color = Pattern.compile("(?i)&([0-9A-FR])");
     private static final Pattern magic = Pattern.compile("(?i)&([K])");
@@ -23,7 +23,7 @@ public class PlayerChatListener implements Listener {
     private static final Pattern underline = Pattern.compile("(?i)&([N])");
     private static final Pattern italic = Pattern.compile("(?i)&([O])");
 
-    public PlayerChatListener(Chat plugin) {
+    public PlayerChatListener(ChatPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -31,8 +31,8 @@ public class PlayerChatListener implements Listener {
     public void onChat(AsyncPlayerChatEvent e) {
         Player player = e.getPlayer();
 
-        if(!ChatCommand.isEnabled() && !player.hasPermission("chat.manage.bypass")) {
-            player.sendMessage(Chat.prefix + "Der Chat ist §bdeaktiviert!");
+        if(!Chat.isEnabled() && !player.hasPermission("chat.manage.bypass")) {
+            player.sendMessage(ChatPlugin.prefix + "Der Chat ist §bdeaktiviert!");
             e.setCancelled(true);
             return;
         }

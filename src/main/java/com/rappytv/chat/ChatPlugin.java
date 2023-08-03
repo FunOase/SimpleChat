@@ -1,6 +1,7 @@
 package com.rappytv.chat;
 
-import com.rappytv.chat.commands.ChatCommand;
+import com.rappytv.chat.commands.Chat;
+import com.rappytv.chat.commands.ChatClear;
 import com.rappytv.chat.commands.Emoji;
 import com.rappytv.chat.events.JoinListener;
 import com.rappytv.chat.events.PlayerChatListener;
@@ -14,7 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
 
-public final class Chat extends JavaPlugin {
+public final class ChatPlugin extends JavaPlugin {
 
     public final static String prefix = "§e§lChat §8» §7";
     public static int maxWeight;
@@ -47,7 +48,8 @@ public final class Chat extends JavaPlugin {
         pm.registerEvents(new JoinListener(this), this);
         pm.registerEvents(new PlayerChatListener(this), this);
 
-        Objects.requireNonNull(Bukkit.getPluginCommand("chat")).setExecutor(new ChatCommand());
+        Objects.requireNonNull(Bukkit.getPluginCommand("chat")).setExecutor(new Chat());
+        Objects.requireNonNull(Bukkit.getPluginCommand("chatclear")).setExecutor(new ChatClear());
         Objects.requireNonNull(Bukkit.getPluginCommand("emoji")).setExecutor(new Emoji());
     }
 

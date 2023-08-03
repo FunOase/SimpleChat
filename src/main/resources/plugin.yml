@@ -1,6 +1,6 @@
 name: Chat
 version: '${project.version}'
-main: com.rappytv.chat.Chat
+main: com.rappytv.chat.ChatPlugin
 api-version: 1.19
 authors: [ RappyTV ]
 depend:
@@ -8,6 +8,8 @@ depend:
 
 commands:
   chat: {}
+  chatclear:
+    aliases: [ cc ]
   emoji: {}
 
 permissions:
@@ -21,6 +23,10 @@ permissions:
       chat.manage.bypass:
         default: op
 
+  chat.clear:
+    default: op
+  chat.clear.bypass:
+    default: op
 
   chat.format.colors:
     default: op
