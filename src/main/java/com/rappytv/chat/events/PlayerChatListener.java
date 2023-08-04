@@ -3,7 +3,6 @@ package com.rappytv.chat.events;
 import com.rappytv.chat.ChatPlugin;
 import com.rappytv.chat.commands.Chat;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,44 +27,47 @@ public class PlayerChatListener implements Listener {
     }
 
     @EventHandler
-    public void onChat(AsyncPlayerChatEvent e) {
-        Player player = e.getPlayer();
+    public void onChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
 
         if(!Chat.isEnabled() && !player.hasPermission("chat.manage.bypass")) {
             player.sendMessage(ChatPlugin.prefix + "Der Chat ist §bdeaktiviert!");
-            e.setCancelled(true);
+            event.setCancelled(true);
             return;
         }
-        String message = e.getMessage();
         if(player.hasPermission("chat.emojis")) {
+            String message = event.getMessage();
             for(String emoji : plugin.getConfig().getStringList("emojis")) {
                 String[] emojis = emoji.split(";");
                 if(emojis[0] == null || emojis[1] == null) continue;
                 message = message.replace(emojis[0], emojis[1]);
             }
-            e.setMessage(message);
+            event.setMessage(message);
         }
-        if((message.toLowerCase().startsWith("@team") || message.toLowerCase().startsWith("@t")) && player.hasPermission("chat.team")) {
-            StringBuilder msg = new StringBuilder();
-            String[] words = message.split(" ");
-            for(int i = 1; i < words.length; i++) {
-                msg.append(words[i]).append(" ");
+        event.setMessage(translateColorCodes(player, event.getMessage()));
+        if((event.getMessage().toLowerCase().startsWith("@team") || event.getMessage().toLowerCase().startsWith("@t")) && player.hasPermission("chat.team")) {
+            event.setCancelled(true);
+            String msg = event.getMessage();
+            String[] words = msg.split(" ");
+            if(words.length < 2) {
+                player.sendMessage(ChatPlugin.prefix + "§cBitte gib einen Text an!");
+                return;
             }
+            String teamMessage = msg.substring(words[0].length() + 1);
 
             for(Player all : Bukkit.getOnlinePlayers()) {
                 if(all.hasPermission("chat.team"))
-                    all.sendMessage("§8»\n§c§l@TEAM §8| §b" + player.getName() + " §8» §f" + ChatColor.translateAlternateColorCodes('&', msg.toString()) + "\n§8»");
+                    all.sendMessage("§8»\n§c§l@TEAM §8| §b" + player.getName() + " §8» §f" + teamMessage + "\n§8»");
             }
-            e.setCancelled(true);
             return;
         }
 
         String prefix = plugin.getLuckPermsUtil().getChatPrefix(player);
 
         if(player.hasPermission("chat.format.margin")) {
-            e.setFormat("§8»\n§7" + prefix + " §8| §7" + player.getName() + " §8» §7" + translateColorCodes(player, e.getMessage()) + "\n§8»");
+            event.setFormat("§8»\n§7" + prefix + " §8| §7%s §8» §7%s\n§8»");
         } else {
-            e.setFormat(prefix + " §8| §7" + player.getName() + " §8» §7" + translateColorCodes(player, e.getMessage()));
+            event.setFormat(prefix + " §8| §7%s §8» §7%s");
         }
     }
 
