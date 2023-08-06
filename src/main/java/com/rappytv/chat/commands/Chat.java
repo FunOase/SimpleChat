@@ -22,7 +22,7 @@ public class Chat implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command cmd, String prefix, String[] args) {
         if(sender instanceof Player) {
             Player p = (Player) sender;
-            if (!p.hasPermission("chat.manage.enable") && !p.hasPermission("chat.manage.disable")) {
+            if (!p.hasPermission("chat.manage")) {
                 p.sendMessage(ChatPlugin.prefix + "§cDazu hast du keine Berechtigung!");
                 return false;
             }
