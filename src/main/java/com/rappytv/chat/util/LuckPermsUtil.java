@@ -12,7 +12,6 @@ import org.bukkit.scoreboard.Team;
 
 import java.util.Iterator;
 
-@SuppressWarnings({"ConstantConditions"})
 public class LuckPermsUtil {
 
     private final LuckPerms api;
@@ -32,7 +31,7 @@ public class LuckPermsUtil {
 
     public String getChatPrefix(Player player) {
         Group group = getPrimaryGroup(player);
-        if(group.getDisplayName() == null) return null;
+        if(group.getDisplayName() == null) return "";
 
         return ChatColor.translateAlternateColorCodes('&', group.getDisplayName());
     }
