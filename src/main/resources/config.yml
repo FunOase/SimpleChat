@@ -1,3 +1,15 @@
+format:
+  chat:
+    margin: "&8»"
+    # The first %s is the playername and the second %s is the message. They can't be switched
+    message: "<margin><prefix> §8| &7%s &8» &7%s<margin>"
+    teamChat: "&8»\n&c&l@TEAM &8| &b<player> &8» &f<message>\n&8»"
+  tab:
+    prefix: "<prefix> &8| "
+    nameColor: "GRAY"
+    suffix: " &8[<suffix>&8]"
+
+maxWeight: 100
 emojis:
   - <3;❤
   - ":star:;§6✮§7"
@@ -29,4 +41,3 @@ emojis:
   - "h/;§eヽ(^◇^*)/§7"
   - ":dj:;§9ヽ§d(⌐§c■§6_§e■§9)ノ♬§7"
   - ":cute:;§e(§a✿§eᴖ‿ᴖ)§7"
-maxWeight: 100
