@@ -1,7 +1,7 @@
 package com.rappytv.chat.util;
 
 import com.rappytv.chat.ChatPlugin;
-import net.luckperms.api.LuckPerms;
+import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import org.bukkit.Bukkit;
@@ -11,29 +11,71 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.util.Iterator;
+import java.util.Objects;
 
+@SuppressWarnings("ConstantConditions")
 public class LuckPermsUtil {
 
-    private final LuckPerms api;
+    private final ChatPlugin plugin;
 
-    public LuckPermsUtil(LuckPerms api) {
-        this.api = api;
+    public LuckPermsUtil(ChatPlugin plugin) {
+        this.plugin = plugin;
     }
 
     private User getUser(Player player) {
-        return api.getPlayerAdapter(Player.class).getUser(player);
+        return plugin.lp.getPlayerAdapter(Player.class).getUser(player);
     }
 
-    private Group getPrimaryGroup(Player player) {
+    public Group getPrimaryGroup(Player player) {
         User user = getUser(player);
-        return api.getGroupManager().getGroup(user.getPrimaryGroup());
+        return plugin.lp.getGroupManager().getGroup(user.getPrimaryGroup());
     }
 
-    public String getChatPrefix(Player player) {
+    public String getTabPrefix(Player player) {
         Group group = getPrimaryGroup(player);
-        if(group.getDisplayName() == null) return "";
+        CachedMetaData meta = group.getCachedData().getMetaData();
 
-        return ChatColor.translateAlternateColorCodes('&', group.getDisplayName());
+        if(!plugin.getConfig().contains("format.tab.prefix")) {
+            plugin.getLogger().severe("Tab prefix has to be set!");
+            return "";
+        }
+        return ChatColor.translateAlternateColorCodes(
+                '&',
+                plugin
+                        .getConfig()
+                        .getString("format.tab.prefix")
+                        .replaceAll("<prefix>", Objects.requireNonNull(meta.getPrefix()))
+        );
+    }
+
+    public String getTabSuffix(Player player) {
+        Group group = getPrimaryGroup(player);
+        CachedMetaData meta = group.getCachedData().getMetaData();
+
+        if(!plugin.getConfig().contains("format.tab.suffix")) {
+            plugin.getLogger().severe("Tab suffix has to be set!");
+            return "";
+        }
+        return ChatColor.translateAlternateColorCodes(
+                '&',
+                plugin
+                        .getConfig()
+                        .getString("format.tab.suffix")
+                        .replaceAll("<suffix>", Objects.requireNonNull(meta.getSuffix()))
+        );
+    }
+
+    public ChatColor getNameColor() {
+        if(!plugin.getConfig().contains("format.tab.color")) {
+            plugin.getLogger().severe("Tab suffix has to be set!");
+            return ChatColor.WHITE;
+        }
+        try {
+            return ChatColor.valueOf(plugin.getConfig().getString("format.tab.color"));
+        } catch (IllegalArgumentException e) {
+            plugin.getLogger().severe("Invalid name color!");
+            return ChatColor.WHITE;
+        }
     }
 
     public void setTabPrefix(Player player) {
@@ -43,6 +85,8 @@ public class LuckPermsUtil {
         Player target;
         String teamId;
         Team team;
+        String prefix;
+        String suffix;
 
         sb.getTeams().forEach((t) -> {
             if(t.getEntries().isEmpty())
@@ -56,8 +100,12 @@ public class LuckPermsUtil {
                 team = sb.registerNewTeam(teamId);
             }
 
-            team.setPrefix(getChatPrefix(target) + " §8| ");
-            team.setColor(ChatColor.GRAY);
+            prefix = getTabPrefix(target);
+            suffix = getTabSuffix(target);
+
+            if(!prefix.isEmpty()) team.setPrefix(prefix);
+            if(!suffix.isEmpty()) team.setPrefix(suffix);
+            team.setColor(getNameColor());
             team.addEntry(target.getName());
         }
 
@@ -73,15 +121,19 @@ public class LuckPermsUtil {
                     team = sb.registerNewTeam(teamId);
                 }
 
-                team.setPrefix(getChatPrefix(player) + " §8| ");
-                team.setColor(ChatColor.GRAY);
+                prefix = getTabPrefix(player);
+                suffix = getTabSuffix(player);
+
+                if(!prefix.isEmpty()) team.setPrefix(prefix);
+                if(!suffix.isEmpty()) team.setPrefix(suffix);
+                team.setColor(getNameColor());
                 team.addEntry(player.getName());
             }
         }
     }
 
     private String getTeamId(Player player) {
-        int maxWeight = ChatPlugin.maxWeight;
+        int maxWeight = plugin.getConfig().getInt("maxWeight");
         int maxWeightLength = Integer.toString(maxWeight).length();
         int weight = getPrimaryGroup(player).getWeight().isPresent() ? getPrimaryGroup(player).getWeight().getAsInt() : 0;
 
