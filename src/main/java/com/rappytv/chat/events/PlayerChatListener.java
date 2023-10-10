@@ -2,7 +2,10 @@ package com.rappytv.chat.events;
 
 import com.rappytv.chat.ChatPlugin;
 import com.rappytv.chat.commands.Chat;
+import net.luckperms.api.cacheddata.CachedMetaData;
+import net.luckperms.api.model.group.Group;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,6 +14,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("ConstantConditions")
 public class PlayerChatListener implements Listener {
 
     private final ChatPlugin plugin;
@@ -37,12 +41,18 @@ public class PlayerChatListener implements Listener {
         }
         if(player.hasPermission("chat.emojis")) {
             String message = event.getMessage();
-            for(String emoji : plugin.getConfig().getStringList("emojis")) {
-                String[] emojis = emoji.split(";");
-                if(emojis[0] == null || emojis[1] == null) continue;
-                message = message.replace(emojis[0], emojis[1]);
+            if(!plugin.getConfig().contains("emojis")) {
+                plugin.getLogger().severe("Emoji list has to be set!");
+            } else {
+                for(String emoji : plugin.getConfig().getStringList("emojis")) {
+                    try {
+                        String[] emojis = emoji.split(";");
+                        message = message.replaceAll(emojis[0], emojis[1]);
+                    } catch (IndexOutOfBoundsException ignored) {
+                    }
+                }
+                event.setMessage(message);
             }
-            event.setMessage(message);
         }
         event.setMessage(translateColorCodes(player, event.getMessage()));
         if((event.getMessage().toLowerCase().startsWith("@team") || event.getMessage().toLowerCase().startsWith("@t")) && player.hasPermission("chat.team")) {
@@ -55,20 +65,43 @@ public class PlayerChatListener implements Listener {
             }
             String teamMessage = msg.substring(words[0].length() + 1);
 
+            if(!plugin.getConfig().contains("format.chat.teamChat")) {
+                player.sendMessage(ChatPlugin.prefix + "§cEin Fehler ist aufgetreten! Bitte schau in die Logs.");
+                plugin.getLogger().severe("Team chat format has to be set!");
+                return;
+            }
+
             for(Player all : Bukkit.getOnlinePlayers()) {
                 if(all.hasPermission("chat.team"))
-                    all.sendMessage("§8»\n§c§l@TEAM §8| §b" + player.getName() + " §8» §f" + teamMessage + "\n§8»");
+                    all.sendMessage(ChatColor.translateAlternateColorCodes(
+                            '&',
+                            plugin.getConfig().getString("format.chat.teamChat")
+                                    .replaceAll("<player>", player.getName())
+                                    .replaceAll("<message>", teamMessage)
+                    ));
             }
             return;
         }
 
-        String prefix = plugin.getLuckPermsUtil().getChatPrefix(player);
+        Group group = plugin.getLuckPermsUtil().getPrimaryGroup(player);
+        CachedMetaData meta = group.getCachedData().getMetaData();
 
-        if(player.hasPermission("chat.format.margin")) {
-            event.setFormat("§8»\n§7" + prefix + " §8| §7%s §8» §7%s\n§8»");
-        } else {
-            event.setFormat(prefix + " §8| §7%s §8» §7%s");
+        if(!plugin.getConfig().contains("format.chat.message") || !plugin.getConfig().contains("format.chat.margin")) {
+            player.sendMessage(ChatPlugin.prefix + "§cEin Fehler ist aufgetreten! Bitte schau in die Logs.");
+            plugin.getLogger().severe("Chat format and margin format has to be set!");
+            return;
         }
+
+        boolean margin = player.hasPermission("chat.format.margin");
+        String marginText = plugin.getConfig().getString("format.chat.margin");
+        event.setFormat(ChatColor.translateAlternateColorCodes(
+                '&',
+                plugin.getConfig().getString("format.chat.teamChat")
+                        .replaceAll("<prefix>", meta.getPrefix())
+                        .replaceAll("<suffix>", meta.getSuffix())
+                        .replace("<margin>", margin ? marginText + "\n" : "")
+                        .replace("<margin>", margin ? "\n" + marginText : "")
+        ));
     }
 
     public static String translateColorCodes(Player player, String message) {
