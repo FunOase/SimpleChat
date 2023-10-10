@@ -11,6 +11,7 @@ import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
@@ -18,7 +19,6 @@ import java.util.Objects;
 public final class ChatPlugin extends JavaPlugin {
 
     public final static String prefix = "§e§lChat §8» §7";
-    public static int maxWeight;
     public LuckPerms lp;
     private LuckPermsUtil luckPermsUtil;
 
@@ -26,15 +26,15 @@ public final class ChatPlugin extends JavaPlugin {
     public void onEnable() {
         registerAll();
         saveDefaultConfig();
-        maxWeight = getConfig().getInt("maxWeight");
 
         LuckPerms provider = Bukkit.getServicesManager().load(LuckPerms.class);
         if (provider != null) {
             lp = provider;
-            getServer().getLogger().info("Luckperms successfully loaded!");
+            getLogger().info("Luckperms successfully loaded!");
             new UpdateListener(this);
         }
-        luckPermsUtil = new LuckPermsUtil(lp);
+        luckPermsUtil = new LuckPermsUtil(this);
+        Bukkit.getServicesManager().register(LuckPermsUtil.class, luckPermsUtil, this, ServicePriority.Normal);
         for(Player all : Bukkit.getOnlinePlayers()) {
             luckPermsUtil.setTabPrefix(all);
         }
