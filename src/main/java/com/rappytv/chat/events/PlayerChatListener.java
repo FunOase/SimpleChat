@@ -2,8 +2,6 @@ package com.rappytv.chat.events;
 
 import com.rappytv.chat.ChatPlugin;
 import com.rappytv.chat.commands.Chat;
-import net.luckperms.api.cacheddata.CachedMetaData;
-import net.luckperms.api.model.group.Group;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -83,9 +81,6 @@ public class PlayerChatListener implements Listener {
             return;
         }
 
-        Group group = plugin.getLuckPermsUtil().getPrimaryGroup(player);
-        CachedMetaData meta = group.getCachedData().getMetaData();
-
         if(!plugin.getConfig().contains("format.chat.message") || !plugin.getConfig().contains("format.chat.margin")) {
             player.sendMessage(ChatPlugin.prefix + "§cEin Fehler ist aufgetreten! Bitte schau in die Logs.");
             plugin.getLogger().severe("Chat format and margin format has to be set!");
@@ -97,8 +92,8 @@ public class PlayerChatListener implements Listener {
         event.setFormat(ChatColor.translateAlternateColorCodes(
                 '&',
                 plugin.getConfig().getString("format.chat.teamChat")
-                        .replaceAll("<prefix>", meta.getPrefix())
-                        .replaceAll("<suffix>", meta.getSuffix())
+                        .replaceAll("<prefix>", plugin.getLuckPermsUtil().getPrefix(player))
+                        .replaceAll("<suffix>", plugin.getLuckPermsUtil().getSuffix(player))
                         .replace("<margin>", margin ? marginText + "\n" : "")
                         .replace("<margin>", margin ? "\n" + marginText : "")
         ));

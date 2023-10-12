@@ -31,10 +31,21 @@ public class LuckPermsUtil {
         return plugin.lp.getGroupManager().getGroup(user.getPrimaryGroup());
     }
 
-    public String getTabPrefix(Player player) {
+    public String getPrefix(Player player) {
         Group group = getPrimaryGroup(player);
         CachedMetaData meta = group.getCachedData().getMetaData();
 
+        return meta.getPrefix();
+    }
+
+    public String getSuffix(Player player) {
+        Group group = getPrimaryGroup(player);
+        CachedMetaData meta = group.getCachedData().getMetaData();
+
+        return meta.getSuffix();
+    }
+
+    private String getTabPrefix(Player player) {
         if(!plugin.getConfig().contains("format.tab.prefix")) {
             plugin.getLogger().severe("Tab prefix has to be set!");
             return "";
@@ -44,14 +55,11 @@ public class LuckPermsUtil {
                 plugin
                         .getConfig()
                         .getString("format.tab.prefix")
-                        .replaceAll("<prefix>", Objects.requireNonNull(meta.getPrefix()))
+                        .replaceAll("<prefix>", getPrefix(player))
         );
     }
 
-    public String getTabSuffix(Player player) {
-        Group group = getPrimaryGroup(player);
-        CachedMetaData meta = group.getCachedData().getMetaData();
-
+    private String getTabSuffix(Player player) {
         if(!plugin.getConfig().contains("format.tab.suffix")) {
             plugin.getLogger().severe("Tab suffix has to be set!");
             return "";
@@ -61,11 +69,11 @@ public class LuckPermsUtil {
                 plugin
                         .getConfig()
                         .getString("format.tab.suffix")
-                        .replaceAll("<suffix>", Objects.requireNonNull(meta.getSuffix()))
+                        .replaceAll("<suffix>", getSuffix(player))
         );
     }
 
-    public ChatColor getNameColor() {
+    private ChatColor getNameColor() {
         if(!plugin.getConfig().contains("format.tab.color")) {
             plugin.getLogger().severe("Tab suffix has to be set!");
             return ChatColor.WHITE;
