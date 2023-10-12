@@ -18,7 +18,7 @@ import java.util.Objects;
 
 public final class ChatPlugin extends JavaPlugin {
 
-    public final static String prefix = "§e§lChat §8» §7";
+    public static String prefix;
     public LuckPerms lp;
     private LuckPermsUtil luckPermsUtil;
 
@@ -26,6 +26,8 @@ public final class ChatPlugin extends JavaPlugin {
     public void onEnable() {
         registerAll();
         saveDefaultConfig();
+
+        prefix = getConfig().contains("prefix") ? getConfig().getString("prefix") : "§e§lChat §8» §7";
 
         LuckPerms provider = Bukkit.getServicesManager().load(LuckPerms.class);
         if (provider != null) {
