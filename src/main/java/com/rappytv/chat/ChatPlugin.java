@@ -9,6 +9,7 @@ import com.rappytv.chat.events.luckperms.UpdateListener;
 import com.rappytv.chat.util.LuckPermsUtil;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicePriority;
@@ -27,7 +28,9 @@ public final class ChatPlugin extends JavaPlugin {
         registerAll();
         saveDefaultConfig();
 
-        prefix = getConfig().contains("prefix") ? getConfig().getString("prefix") : "§e§lChat §8» §7";
+        prefix = getConfig().contains("prefix")
+                ? ChatColor.translateAlternateColorCodes('&', getConfig().getString("prefix"))
+                : "§e§lChat §8» §7";
 
         LuckPerms provider = Bukkit.getServicesManager().load(LuckPerms.class);
         if (provider != null) {
