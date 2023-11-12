@@ -76,13 +76,13 @@ public class LuckPermsUtil {
 
     private ChatColor getNameColor() {
         if(!plugin.getConfig().contains("format.tab.color")) {
-            plugin.getLogger().severe("Tab suffix has to be set!");
+            plugin.getLogger().severe("Tab name color has to be set!");
             return ChatColor.WHITE;
         }
         try {
             return ChatColor.valueOf(plugin.getConfig().getString("format.tab.color"));
         } catch (IllegalArgumentException e) {
-            plugin.getLogger().severe("Invalid name color!");
+            plugin.getLogger().severe("Invalid tab name color!");
             return ChatColor.WHITE;
         }
     }
