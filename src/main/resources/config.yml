@@ -7,7 +7,7 @@ format:
     teamChat: "&8»\n&c&l@TEAM &8| &b<player> &8» &f<message>\n&8»"
   tab:
     prefix: "<prefix> &8| "
-    nameColor: "GRAY"
+    color: "GRAY"
     suffix: " &8[<suffix>&8]"
 
 maxWeight: 100
