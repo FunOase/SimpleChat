@@ -49,12 +49,13 @@ public class LuckPermsUtil {
             plugin.getLogger().severe("Tab prefix has to be set!");
             return "";
         }
-        return ChatColor.translateAlternateColorCodes(
+        String prefix = getPrefix(player);
+        return prefix.isEmpty() ? "" : ChatColor.translateAlternateColorCodes(
                 '&',
                 plugin
                         .getConfig()
                         .getString("format.tab.prefix")
-                        .replaceAll("<prefix>", getPrefix(player))
+                        .replaceAll("<prefix>", prefix)
         );
     }
 
@@ -63,12 +64,13 @@ public class LuckPermsUtil {
             plugin.getLogger().severe("Tab suffix has to be set!");
             return "";
         }
-        return ChatColor.translateAlternateColorCodes(
+        String suffix = getSuffix(player);
+        return suffix.isEmpty() ? "" : ChatColor.translateAlternateColorCodes(
                 '&',
                 plugin
                         .getConfig()
                         .getString("format.tab.suffix")
-                        .replaceAll("<suffix>", getSuffix(player))
+                        .replaceAll("<suffix>", suffix)
         );
     }
 
@@ -111,7 +113,7 @@ public class LuckPermsUtil {
             suffix = getTabSuffix(target);
 
             if(!prefix.isEmpty()) team.setPrefix(prefix);
-            if(!suffix.isEmpty()) team.setPrefix(suffix);
+            if(!suffix.isEmpty()) team.setSuffix(suffix);
             team.setColor(getNameColor());
             team.addEntry(target.getName());
         }
@@ -132,7 +134,7 @@ public class LuckPermsUtil {
                 suffix = getTabSuffix(player);
 
                 if(!prefix.isEmpty()) team.setPrefix(prefix);
-                if(!suffix.isEmpty()) team.setPrefix(suffix);
+                if(!suffix.isEmpty()) team.setSuffix(suffix);
                 team.setColor(getNameColor());
                 team.addEntry(player.getName());
             }
