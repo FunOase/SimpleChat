@@ -91,11 +91,11 @@ public class PlayerChatListener implements Listener {
         String marginText = plugin.getConfig().getString("format.chat.margin");
         event.setFormat(ChatColor.translateAlternateColorCodes(
                 '&',
-                plugin.getConfig().getString("format.chat.teamChat")
+                plugin.getConfig().getString("format.chat.message")
                         .replaceAll("<prefix>", plugin.getLuckPermsUtil().getPrefix(player))
                         .replaceAll("<suffix>", plugin.getLuckPermsUtil().getSuffix(player))
-                        .replace("<margin>", margin ? marginText + "\n" : "")
-                        .replace("<margin>", margin ? "\n" + marginText : "")
+                        .replace("<margin1>", margin ? marginText + "\n" : "")
+                        .replace("<margin2>", margin ? "\n" + marginText : "")
         ));
     }
 

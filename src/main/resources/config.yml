@@ -3,7 +3,7 @@ format:
   chat:
     margin: "&8»"
     # The first %s is the playername and the second %s is the message. They can't be switched
-    message: "<margin><prefix> §8| &7%s &8» &7%s<margin>"
+    message: "<margin1><prefix> §8| &7%s &8» &7%s<margin2>"
     teamChat: "&8»\n&c&l@TEAM &8| &b<player> &8» &f<message>\n&8»"
   tab:
     prefix: "<prefix> &8| "
