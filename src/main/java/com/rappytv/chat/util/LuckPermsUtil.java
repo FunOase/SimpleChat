@@ -11,7 +11,6 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.util.Iterator;
-import java.util.Objects;
 
 @SuppressWarnings("ConstantConditions")
 public class LuckPermsUtil {
@@ -35,14 +34,14 @@ public class LuckPermsUtil {
         Group group = getPrimaryGroup(player);
         CachedMetaData meta = group.getCachedData().getMetaData();
 
-        return meta.getPrefix();
+        return meta.getPrefix() != null ? meta.getPrefix() : "";
     }
 
     public String getSuffix(Player player) {
         Group group = getPrimaryGroup(player);
         CachedMetaData meta = group.getCachedData().getMetaData();
 
-        return meta.getSuffix();
+        return meta.getSuffix() != null ? meta.getSuffix() : "";
     }
 
     private String getTabPrefix(Player player) {
