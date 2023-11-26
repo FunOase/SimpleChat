@@ -27,21 +27,47 @@ public class LuckPermsUtil {
 
     public Group getPrimaryGroup(Player player) {
         User user = getUser(player);
-        return plugin.lp.getGroupManager().getGroup(user.getPrimaryGroup());
+        Group primaryGroup = plugin.lp.getGroupManager().getGroup(user.getPrimaryGroup());
+
+        return primaryGroup != null ? primaryGroup : plugin.lp.getGroupManager().getGroup("default");
     }
 
     public String getPrefix(Player player) {
-        Group group = getPrimaryGroup(player);
-        CachedMetaData meta = group.getCachedData().getMetaData();
+        boolean preferUserMetaData = plugin.getConfig().getBoolean("preferUserMetaData");
+        CachedMetaData playerData = getUser(player).getCachedData().getMetaData();
+        CachedMetaData groupData = getPrimaryGroup(player).getCachedData().getMetaData();
+        String prefix;
 
-        return meta.getPrefix() != null ? meta.getPrefix() : "";
+        if(preferUserMetaData) {
+            if(playerData.getPrefix() != null) prefix = playerData.getPrefix();
+            else if(groupData.getPrefix() != null) prefix = groupData.getPrefix();
+            else prefix = "";
+        } else {
+            if(groupData.getPrefix() != null) prefix = groupData.getPrefix();
+            else if(playerData.getPrefix() != null) prefix = playerData.getPrefix();
+            else prefix = "";
+        }
+
+        return prefix;
     }
 
     public String getSuffix(Player player) {
-        Group group = getPrimaryGroup(player);
-        CachedMetaData meta = group.getCachedData().getMetaData();
+        boolean preferUserMetaData = plugin.getConfig().getBoolean("preferUserMetaData");
+        CachedMetaData playerData = getUser(player).getCachedData().getMetaData();
+        CachedMetaData groupData = getPrimaryGroup(player).getCachedData().getMetaData();
+        String suffix;
 
-        return meta.getSuffix() != null ? meta.getSuffix() : "";
+        if(preferUserMetaData) {
+            if(playerData.getSuffix() != null) suffix = playerData.getSuffix();
+            else if(groupData.getSuffix() != null) suffix = groupData.getSuffix();
+            else suffix = "";
+        } else {
+            if(groupData.getSuffix() != null) suffix = groupData.getSuffix();
+            else if(playerData.getSuffix() != null) suffix = playerData.getSuffix();
+            else suffix = "";
+        }
+
+        return suffix;
     }
 
     private String getTabPrefix(Player player) {
