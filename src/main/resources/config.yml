@@ -9,6 +9,7 @@ format:
     prefix: "<prefix> &8| "
     color: "GRAY"
     suffix: " &8[<suffix>&8]"
+preferUserMetaData: true
 
 maxWeight: 100
 emojis:
