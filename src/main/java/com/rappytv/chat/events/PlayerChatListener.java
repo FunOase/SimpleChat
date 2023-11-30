@@ -3,7 +3,6 @@ package com.rappytv.chat.events;
 import com.rappytv.chat.ChatPlugin;
 import com.rappytv.chat.commands.Chat;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,7 +15,7 @@ import java.util.regex.Pattern;
 public class PlayerChatListener implements Listener {
 
     private final ChatPlugin plugin;
-    private static final Pattern hex = Pattern.compile("#[a-fA-F0-9]{6}");
+    public static final Pattern hex = Pattern.compile("#[a-fA-F0-9]{6}");
     private static final Pattern color = Pattern.compile("(?i)&([0-9A-FR])");
     private static final Pattern magic = Pattern.compile("(?i)&([K])");
     private static final Pattern bold = Pattern.compile("(?i)&([L])");
@@ -71,8 +70,7 @@ public class PlayerChatListener implements Listener {
 
             for(Player all : Bukkit.getOnlinePlayers()) {
                 if(all.hasPermission("chat.team"))
-                    all.sendMessage(ChatColor.translateAlternateColorCodes(
-                            '&',
+                    all.sendMessage(plugin.getLuckPermsUtil().replaceColorCodes(
                             plugin.getConfig().getString("format.chat.teamChat")
                                     .replaceAll("<player>", player.getName())
                                     .replaceAll("<message>", teamMessage)
@@ -89,8 +87,7 @@ public class PlayerChatListener implements Listener {
 
         boolean margin = player.hasPermission("chat.format.margin");
         String marginText = plugin.getConfig().getString("format.chat.margin");
-        event.setFormat(ChatColor.translateAlternateColorCodes(
-                '&',
+        event.setFormat(plugin.getLuckPermsUtil().replaceColorCodes(
                 plugin.getConfig().getString("format.chat.message")
                         .replaceAll("<prefix>", plugin.getLuckPermsUtil().getPrefix(player))
                         .replaceAll("<suffix>", plugin.getLuckPermsUtil().getSuffix(player))

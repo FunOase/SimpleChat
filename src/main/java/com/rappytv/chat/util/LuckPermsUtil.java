@@ -1,6 +1,7 @@
 package com.rappytv.chat.util;
 
 import com.rappytv.chat.ChatPlugin;
+import com.rappytv.chat.events.PlayerChatListener;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
@@ -11,6 +12,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.util.Iterator;
+import java.util.regex.Matcher;
 
 @SuppressWarnings("ConstantConditions")
 public class LuckPermsUtil {
@@ -76,8 +78,7 @@ public class LuckPermsUtil {
             return "";
         }
         String prefix = getPrefix(player);
-        return prefix.isEmpty() ? "" : ChatColor.translateAlternateColorCodes(
-                '&',
+        return prefix.isEmpty() ? "" : replaceColorCodes(
                 plugin
                         .getConfig()
                         .getString("format.tab.prefix")
@@ -91,8 +92,7 @@ public class LuckPermsUtil {
             return "";
         }
         String suffix = getSuffix(player);
-        return suffix.isEmpty() ? "" : ChatColor.translateAlternateColorCodes(
-                '&',
+        return suffix.isEmpty() ? "" : replaceColorCodes(
                 plugin
                         .getConfig()
                         .getString("format.tab.suffix")
@@ -176,5 +176,15 @@ public class LuckPermsUtil {
         String slicedId = id.substring(id.length() - maxWeightLength);
 
         return String.format("%s_%s", slicedId, player.getUniqueId());
+    }
+
+    public String replaceColorCodes(String message) {
+        Matcher match = PlayerChatListener.hex.matcher(message);
+        while(match.find()) {
+            String color = message.substring(match.start(), match.end());
+            message = message.replace(color, net.md_5.bungee.api.ChatColor.of(color) + "");
+            match = PlayerChatListener.hex.matcher(message);
+        }
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 }
