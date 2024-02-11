@@ -1,17 +1,40 @@
-prefix: "&e&lChat §&» §&"
-format:
+checkForUpdates: true
+
+msg:
   chat:
     margin: "&8»"
     # The first %s is the playername and the second %s is the message. They can't be switched
-    message: "<margin1><prefix> §8| &7%s &8» &7%s<margin2>"
+    message: "<margin1><playerPrefix> §8| &7%s &8» &7%s<margin2>"
     teamChat: "&8»\n&c&l@TEAM &8| &b<player> &8» &f<message>\n&8»"
   tab:
-    prefix: "<prefix> &8| "
+    prefix: "<playerPrefix> &8| "
     color: "GRAY"
-    suffix: " &8[<suffix>&8]"
-preferUserMetaData: true
+    suffix: " &8[<playerSuffix>&8]"
 
+  listener:
+    chatOff: '<prefix> Der Chat ist §bdeaktiviert!'
+    enterText: '<prefix> §cBitte gib einen Text an!'
+
+  command:
+    chat:
+      usage: '<cmd> <on|off>'
+      alreadyOn: '<prefix> §cDer Chat ist bereits aktiviert!'
+      alreadyOff: '<prefix> §cDer Chat ist bereits deaktiviert!'
+      successOn: '<prefix> Der Chat wurde erfolgreich §baktiviert§7!'
+      successOff: '<prefix> Der Chat wurde erfolgreich §bdeaktiviert§7!'
+      announceOn: '<prefix> Der Chat wurde §baktiviert§7!'
+      announceOff: '<prefix> Der Chat wurde §bdeaktiviert§7!'
+    chatclear:
+      console: Konsole
+      success: '<prefix> Der Chat wurde gerade von §b<staff> §7gecleart!'
+    emoji:
+      activated: '&aaktiviert'
+      deactivated: '&cdeaktiviert'
+      success: '<prefix> Emojis sind nun <state>§7!'
+
+preferUserMetaData: true
 maxWeight: 100
+
 emojis:
   - <3;❤
   - ":star:;§6✮§7"
