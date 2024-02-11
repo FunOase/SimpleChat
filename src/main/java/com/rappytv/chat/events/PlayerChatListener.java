@@ -66,10 +66,20 @@ public class PlayerChatListener implements Listener {
 
         boolean margin = player.hasPermission("chat.format.margin");
         String marginText = plugin.i18n().translate("chat.margin");
+        String prefix = plugin.getLuckPermsUtil().getPrefix(player);
+        String suffix = plugin.getLuckPermsUtil().getSuffix(player);
         event.setFormat(Colors.translateCodes(
                 plugin.i18n().translate("chat.message")
-                        .replace("<playerPrefix>", plugin.getLuckPermsUtil().getPrefix(player))
-                        .replace("<playerSuffix>", plugin.getLuckPermsUtil().getSuffix(player))
+                        .replace(
+                                "<prefixFormat>",
+                                !prefix.isEmpty() ? plugin.i18n().translate("chat.prefixFormat") : ""
+                        )
+                        .replace(
+                                "<suffixFormat>",
+                                !suffix.isEmpty() ? plugin.i18n().translate("chat.suffixFormat") : ""
+                        )
+                        .replace("<playerPrefix>", prefix)
+                        .replace("<playerSuffix>", suffix)
                         .replace("<margin1>", margin ? marginText + "\n" : "")
                         .replace("<margin2>", margin ? "\n" + marginText : "")
         ));
