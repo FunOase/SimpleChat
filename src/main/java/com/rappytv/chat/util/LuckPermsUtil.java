@@ -1,7 +1,7 @@
 package com.rappytv.chat.util;
 
 import com.rappytv.chat.ChatPlugin;
-import com.rappytv.chat.events.PlayerChatListener;
+import com.rappytv.rylib.util.Colors;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
@@ -12,7 +12,6 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.util.Iterator;
-import java.util.regex.Matcher;
 
 @SuppressWarnings("ConstantConditions")
 public class LuckPermsUtil {
@@ -73,40 +72,24 @@ public class LuckPermsUtil {
     }
 
     private String getTabPrefix(Player player) {
-        if(!plugin.getConfig().contains("format.tab.prefix")) {
-            plugin.getLogger().severe("Tab prefix has to be set!");
-            return "";
-        }
         String prefix = getPrefix(player);
-        return prefix.isEmpty() ? "" : replaceColorCodes(
-                plugin
-                        .getConfig()
-                        .getString("format.tab.prefix")
-                        .replaceAll("<prefix>", prefix)
+        return prefix.isEmpty() ? "" : Colors.translateCodes(
+                plugin.i18n().translate("tab.prefix")
+                        .replaceAll("<playerPrefix>", prefix)
         );
     }
 
     private String getTabSuffix(Player player) {
-        if(!plugin.getConfig().contains("format.tab.suffix")) {
-            plugin.getLogger().severe("Tab suffix has to be set!");
-            return "";
-        }
         String suffix = getSuffix(player);
-        return suffix.isEmpty() ? "" : replaceColorCodes(
-                plugin
-                        .getConfig()
-                        .getString("format.tab.suffix")
-                        .replaceAll("<suffix>", suffix)
+        return suffix.isEmpty() ? "" : Colors.translateCodes(
+                plugin.i18n().translate("tab.suffix")
+                        .replaceAll("<playerSuffix>", suffix)
         );
     }
 
     private ChatColor getNameColor() {
-        if(!plugin.getConfig().contains("format.tab.color")) {
-            plugin.getLogger().severe("Tab name color has to be set!");
-            return ChatColor.WHITE;
-        }
         try {
-            return ChatColor.valueOf(plugin.getConfig().getString("format.tab.color"));
+            return ChatColor.valueOf(plugin.i18n().translate("tab.color"));
         } catch (IllegalArgumentException e) {
             plugin.getLogger().severe("Invalid tab name color!");
             return ChatColor.WHITE;
@@ -176,15 +159,5 @@ public class LuckPermsUtil {
         String slicedId = id.substring(id.length() - maxWeightLength);
 
         return String.format("%s_%s", slicedId, player.getUniqueId());
-    }
-
-    public String replaceColorCodes(String message) {
-        Matcher match = PlayerChatListener.hex.matcher(message);
-        while(match.find()) {
-            String color = message.substring(match.start(), match.end());
-            message = message.replace(color, net.md_5.bungee.api.ChatColor.of(color) + "");
-            match = PlayerChatListener.hex.matcher(message);
-        }
-        return ChatColor.translateAlternateColorCodes('&', message);
     }
 }
