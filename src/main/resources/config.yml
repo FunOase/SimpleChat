@@ -1,6 +1,6 @@
 checkForUpdates: true
 
-msg:
+i18n:
   chat:
     margin: "&8»"
     # The first %s is the playername and the second %s is the message. They can't be switched
