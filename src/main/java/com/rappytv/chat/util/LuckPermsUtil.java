@@ -121,8 +121,8 @@ public class LuckPermsUtil {
             prefix = getTabPrefix(target);
             suffix = getTabSuffix(target);
 
-            if(!prefix.isEmpty()) team.setPrefix(prefix);
-            if(!suffix.isEmpty()) team.setSuffix(suffix);
+            team.setPrefix(prefix);
+            team.setSuffix(suffix);
             team.setColor(getNameColor());
             team.addEntry(target.getName());
         }
@@ -142,8 +142,8 @@ public class LuckPermsUtil {
                 prefix = getTabPrefix(player);
                 suffix = getTabSuffix(player);
 
-                if(!prefix.isEmpty()) team.setPrefix(prefix);
-                if(!suffix.isEmpty()) team.setSuffix(suffix);
+                team.setPrefix(prefix);
+                team.setSuffix(suffix);
                 team.setColor(getNameColor());
                 team.addEntry(player.getName());
             }
