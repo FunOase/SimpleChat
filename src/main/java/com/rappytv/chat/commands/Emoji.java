@@ -3,7 +3,8 @@ package com.rappytv.chat.commands;
 import com.rappytv.chat.ChatPlugin;
 import com.rappytv.rylib.RyLib;
 import com.rappytv.rylib.util.Command;
-import org.bukkit.Bukkit;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.Node;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -27,7 +28,9 @@ public class Emoji extends Command<ChatPlugin> {
             return;
         }
         boolean active = !player.hasPermission("chat.emojis");
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + player.getName() + " permission set chat.emojis " + active);
+        User user = plugin.lp.getPlayerAdapter(Player.class).getUser(player);
+        user.data().add(Node.builder("chat.emojis").value(active).build());
+        plugin.lp.getUserManager().saveUser(user);
 
         String text = active
                 ? plugin.i18n().translate("command.emoji.activated")
