@@ -4,6 +4,7 @@ main: com.rappytv.chat.ChatPlugin
 api-version: 1.19
 authors: [ RappyTV ]
 depend:
+  - RyLib
   - LuckPerms
 
 commands:
