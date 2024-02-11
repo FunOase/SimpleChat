@@ -29,7 +29,7 @@ public class Chat extends Command<ChatPlugin> {
         if(args.length < 1 || !Arrays.asList("on", "off").contains(args[0])) {
             sender.sendMessage(
                     RyLib.get().i18n().translate("usage")
-                            .replace("<usage>", plugin.i18n().translate("commands.chat.usage"))
+                            .replace("<usage>", plugin.i18n().translate("command.chat.usage"))
                             .replace("<cmd>", prefix)
             );
             return;
@@ -40,14 +40,14 @@ public class Chat extends Command<ChatPlugin> {
                 return;
             }
             if(enabled) {
-                sender.sendMessage(plugin.i18n().translate("commands.chat.alreadyOn"));
+                sender.sendMessage(plugin.i18n().translate("command.chat.alreadyOn"));
                 return;
             }
 
             enabled = true;
-            sender.sendMessage(plugin.i18n().translate("commands.chat.successOn"));
+            sender.sendMessage(plugin.i18n().translate("command.chat.successOn"));
             for(Player all : Bukkit.getOnlinePlayers()) {
-                all.sendMessage(plugin.i18n().translate("commands.chat.announceOn"));
+                all.sendMessage(plugin.i18n().translate("command.chat.announceOn"));
             }
         } else if(args[0].equalsIgnoreCase("off")) {
             if(!sender.hasPermission("chat.manage.disable")) {
@@ -55,14 +55,14 @@ public class Chat extends Command<ChatPlugin> {
                 return;
             }
             if(!enabled) {
-                sender.sendMessage(plugin.i18n().translate("commands.chat.alreadyOff"));
+                sender.sendMessage(plugin.i18n().translate("command.chat.alreadyOff"));
                 return;
             }
 
             enabled = false;
-            sender.sendMessage(plugin.i18n().translate("commands.chat.successOff"));
+            sender.sendMessage(plugin.i18n().translate("command.chat.successOff"));
             for(Player all : Bukkit.getOnlinePlayers()) {
-                all.sendMessage(plugin.i18n().translate("commands.chat.announceOff"));
+                all.sendMessage(plugin.i18n().translate("command.chat.announceOff"));
             }
         }
     }
