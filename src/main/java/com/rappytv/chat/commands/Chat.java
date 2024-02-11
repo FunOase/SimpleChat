@@ -1,75 +1,77 @@
 package com.rappytv.chat.commands;
 
 import com.rappytv.chat.ChatPlugin;
+import com.rappytv.rylib.RyLib;
+import com.rappytv.rylib.util.Command;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-@SuppressWarnings("all")
-public class Chat implements CommandExecutor, TabCompleter {
+public class Chat extends Command<ChatPlugin> {
 
     private static boolean enabled = true;
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String prefix, String[] args) {
-        if(sender instanceof Player) {
-            Player p = (Player) sender;
-            if (!p.hasPermission("chat.manage")) {
-                p.sendMessage(ChatPlugin.prefix + "§cDazu hast du keine Berechtigung!");
-                return false;
-            }
-        }
-        if(args.length < 1 || !Arrays.asList("on", "off").contains(args[0])) {
-            sender.sendMessage(ChatPlugin.prefix + "§cSo benutzt du den Befehl: §b/" + prefix + " <on|off>§c!");
-            return false;
-        }
-        if(args[0].equalsIgnoreCase("on")) {
-            if(!sender.hasPermission("chat.manage.enable")) {
-                sender.sendMessage(ChatPlugin.prefix + "§cDazu hast du keine Berechtigung!");
-                return false;
-            }
-            if(enabled) {
-                sender.sendMessage(ChatPlugin.prefix + "§cDer Chat ist bereits aktiviert!");
-                return false;
-            }
-
-            enabled = true;
-            sender.sendMessage(ChatPlugin.prefix + "Der Chat wurde erfolgreich §baktiviert§7!");
-            for(Player all : Bukkit.getOnlinePlayers()) {
-                all.sendMessage(ChatPlugin.prefix + "Der Chat wurde §baktiviert§7!");
-            }
-        } else if(args[0].equalsIgnoreCase("off")) {
-            if(!sender.hasPermission("chat.manage.disable")) {
-                sender.sendMessage(ChatPlugin.prefix + "§cDazu hast du keine Berechtigung!");
-                return false;
-            }
-            if(!enabled) {
-                sender.sendMessage(ChatPlugin.prefix + "§cDer Chat ist bereits deaktiviert!");
-                return false;
-            }
-
-            enabled = false;
-            sender.sendMessage(ChatPlugin.prefix + "Der Chat wurde erfolgreich §bdeaktiviert§7!");
-            for(Player all : Bukkit.getOnlinePlayers()) {
-                all.sendMessage(ChatPlugin.prefix + "Der Chat wurde §bdeaktiviert§7!");
-            }
-        }
-        return true;
+    public Chat(String name, ChatPlugin plugin) {
+        super(name, plugin);
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+    public void execute(CommandSender sender, String prefix, String[] args) {
+        if(sender instanceof Player player) {
+            if (!player.hasPermission("chat.manage")) {
+                player.sendMessage(RyLib.get().i18n().translate("noPermission"));
+                return;
+            }
+        }
+        if(args.length < 1 || !Arrays.asList("on", "off").contains(args[0])) {
+            sender.sendMessage(
+                    RyLib.get().i18n().translate("usage")
+                            .replace("<usage>", plugin.i18n().translate("commands.chat.usage"))
+                            .replace("<cmd>", prefix)
+            );
+            return;
+        }
+        if(args[0].equalsIgnoreCase("on")) {
+            if(!sender.hasPermission("chat.manage.enable")) {
+                sender.sendMessage(RyLib.get().i18n().translate("noPermission"));
+                return;
+            }
+            if(enabled) {
+                sender.sendMessage(plugin.i18n().translate("commands.chat.alreadyOn"));
+                return;
+            }
+
+            enabled = true;
+            sender.sendMessage(plugin.i18n().translate("commands.chat.successOn"));
+            for(Player all : Bukkit.getOnlinePlayers()) {
+                all.sendMessage(plugin.i18n().translate("commands.chat.announceOn"));
+            }
+        } else if(args[0].equalsIgnoreCase("off")) {
+            if(!sender.hasPermission("chat.manage.disable")) {
+                sender.sendMessage(RyLib.get().i18n().translate("noPermission"));
+                return;
+            }
+            if(!enabled) {
+                sender.sendMessage(plugin.i18n().translate("commands.chat.alreadyOff"));
+                return;
+            }
+
+            enabled = false;
+            sender.sendMessage(plugin.i18n().translate("commands.chat.successOff"));
+            for(Player all : Bukkit.getOnlinePlayers()) {
+                all.sendMessage(plugin.i18n().translate("commands.chat.announceOff"));
+            }
+        }
+    }
+
+    @Override
+    public List<String> complete(CommandSender sender, String prefix, String[] args) {
         if(args.length == 1)
-            return new ArrayList<>(Arrays.asList("on", "off"));
-        return Collections.emptyList();
+            return Arrays.asList("on", "off");
+        return null;
     }
 
     public static boolean isEnabled() {
