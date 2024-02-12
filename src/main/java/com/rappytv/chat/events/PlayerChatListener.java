@@ -3,6 +3,8 @@ package com.rappytv.chat.events;
 import com.rappytv.chat.ChatPlugin;
 import com.rappytv.chat.commands.Chat;
 import com.rappytv.rylib.util.Colors;
+import com.rappytv.rylib.util.I18n;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -55,11 +57,14 @@ public class PlayerChatListener implements Listener {
 
             for(Player all : Bukkit.getOnlinePlayers()) {
                 if(all.hasPermission("chat.team"))
-                    all.sendMessage(Colors.translateCodes(
-                            plugin.i18n().translate("chat.teamChat")
-                                    .replaceAll("<player>", player.getName())
-                                    .replaceAll("<message>", teamMessage)
-                    ));
+                    all.sendMessage(Colors.translateCodes(PlaceholderAPI.setPlaceholders(
+                            player,
+                            plugin.i18n().translate(
+                                    "chat.teamChat",
+                                    new I18n.Argument("player", player.getName()),
+                                    new I18n.Argument("message", teamMessage)
+                            )
+                    )));
             }
             return;
         }
@@ -68,20 +73,23 @@ public class PlayerChatListener implements Listener {
         String marginText = plugin.i18n().translate("chat.margin");
         String prefix = plugin.getLuckPermsUtil().getPrefix(player);
         String suffix = plugin.getLuckPermsUtil().getSuffix(player);
-        event.setFormat(Colors.translateCodes(
-                plugin.i18n().translate("chat.message")
-                        .replace(
-                                "<prefixFormat>",
+        event.setFormat(Colors.translateCodes(PlaceholderAPI.setPlaceholders(
+                player,
+                plugin.i18n().translate(
+                        "chat.message",
+                        new I18n.Argument(
+                                "prefixFormat",
                                 !prefix.isEmpty() ? plugin.i18n().translate("chat.prefixFormat") : ""
-                        )
-                        .replace(
-                                "<suffixFormat>",
-                                !suffix.isEmpty() ? plugin.i18n().translate("chat.suffixFormat") : ""
-                        )
-                        .replace("<playerPrefix>", prefix)
-                        .replace("<playerSuffix>", suffix)
-                        .replace("<margin1>", margin ? marginText + "\n" : "")
-                        .replace("<margin2>", margin ? "\n" + marginText : "")
-        ));
+                        ),
+                        new I18n.Argument(
+                                "suffixFormat",
+                                !prefix.isEmpty() ? plugin.i18n().translate("chat.suffixFormat") : ""
+                        ),
+                        new I18n.Argument("playerPrefix", prefix),
+                        new I18n.Argument("playerSuffix", suffix),
+                        new I18n.Argument("margin1", margin ? marginText + "\n" : ""),
+                        new I18n.Argument("margin2", margin ? "\n" + marginText : "")
+                )
+        )));
     }
 }
