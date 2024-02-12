@@ -3,6 +3,7 @@ package com.rappytv.chat.commands;
 import com.rappytv.chat.ChatPlugin;
 import com.rappytv.rylib.RyLib;
 import com.rappytv.rylib.util.Command;
+import com.rappytv.rylib.util.I18n;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -28,9 +29,11 @@ public class Chat extends Command<ChatPlugin> {
         }
         if(args.length < 1 || !Arrays.asList("on", "off").contains(args[0])) {
             sender.sendMessage(
-                    RyLib.get().i18n().translate("usage")
-                            .replace("<usage>", plugin.i18n().translate("command.chat.usage"))
-                            .replace("<cmd>", prefix)
+                    RyLib.get().i18n().translate(
+                            "usage",
+                            new I18n.Argument("usage", plugin.i18n().translate("command.chat.usage")),
+                            new I18n.Argument("cmd", prefix)
+                    )
             );
             return;
         }
