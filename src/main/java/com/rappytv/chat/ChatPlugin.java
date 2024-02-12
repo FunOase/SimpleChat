@@ -6,6 +6,8 @@ import com.rappytv.chat.commands.Emoji;
 import com.rappytv.chat.events.JoinListener;
 import com.rappytv.chat.events.PlayerChatListener;
 import com.rappytv.chat.events.luckperms.UpdateListener;
+import com.rappytv.chat.scoreboard.SidebarScoreboard;
+import com.rappytv.chat.scoreboard.TablistScoreboard;
 import com.rappytv.chat.util.LuckPermsUtil;
 import com.rappytv.rylib.util.I18n;
 import com.rappytv.rylib.util.UpdateChecker;
@@ -38,6 +40,8 @@ public final class ChatPlugin extends JavaPlugin {
         );
 
         loadPlaceholderAPI();
+        SidebarScoreboard.init(this);
+        TablistScoreboard.init(this);
         LuckPerms provider = Bukkit.getServicesManager().load(LuckPerms.class);
         if (provider != null) {
             lp = provider;
