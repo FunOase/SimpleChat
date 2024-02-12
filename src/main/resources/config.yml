@@ -13,6 +13,22 @@ i18n:
     color: "GRAY"
     suffix: " &8[<playerSuffix>&8]"
 
+    # -1 to disable. Please only use this if you use placeholders which can change over time
+    updateInterval: -1
+    header:
+      ---> Servername <---
+    footer:
+      Tablist Footer
+  scoreboard:
+    # -1 to disable. Please only use this if you use placeholders which can change over time
+    updateInterval: -1
+    title: '  SERVERNAME  '
+    scores:
+      - ''
+      - 'Score 1'
+      - 'Score 2'
+      - ''
+
   listener:
     chatOff: '<prefix> Der Chat ist §bdeaktiviert!'
     enterText: '<prefix> §cBitte gib einen Text an!'
