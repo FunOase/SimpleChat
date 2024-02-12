@@ -6,6 +6,8 @@ author: RappyTV
 depend:
   - RyLib
   - LuckPerms
+softdepend:
+  - PlaceholderAPI
 
 commands:
   chat:
