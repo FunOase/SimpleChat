@@ -4,7 +4,6 @@ import com.rappytv.chat.ChatPlugin;
 import com.rappytv.chat.commands.Chat;
 import com.rappytv.rylib.util.Colors;
 import com.rappytv.rylib.util.I18n;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -57,7 +56,7 @@ public class PlayerChatListener implements Listener {
 
             for(Player all : Bukkit.getOnlinePlayers()) {
                 if(all.hasPermission("chat.team"))
-                    all.sendMessage(Colors.translateCodes(PlaceholderAPI.setPlaceholders(
+                    all.sendMessage(Colors.translateCodes(ChatPlugin.setPlaceholders(
                             player,
                             plugin.i18n().translate(
                                     "chat.teamChat",
@@ -73,7 +72,7 @@ public class PlayerChatListener implements Listener {
         String marginText = plugin.i18n().translate("chat.margin");
         String prefix = plugin.getLuckPermsUtil().getPrefix(player);
         String suffix = plugin.getLuckPermsUtil().getSuffix(player);
-        event.setFormat(Colors.translateCodes(PlaceholderAPI.setPlaceholders(
+        event.setFormat(Colors.translateCodes(ChatPlugin.setPlaceholders(
                 player,
                 plugin.i18n().translate(
                         "chat.message",

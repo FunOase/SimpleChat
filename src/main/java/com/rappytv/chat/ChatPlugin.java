@@ -9,8 +9,10 @@ import com.rappytv.chat.events.luckperms.UpdateListener;
 import com.rappytv.chat.util.LuckPermsUtil;
 import com.rappytv.rylib.util.I18n;
 import com.rappytv.rylib.util.UpdateChecker;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -21,7 +23,7 @@ public final class ChatPlugin extends JavaPlugin {
 
     public LuckPerms lp;
     private I18n i18n;
-    private boolean usingPlaceholderAPI;
+    private static boolean usingPlaceholderAPI;
     private LuckPermsUtil luckPermsUtil;
 
     @Override
@@ -67,6 +69,10 @@ public final class ChatPlugin extends JavaPlugin {
         } else {
             getLogger().info("Not using PlaceholderAPI.");
         }
+    }
+
+    public static String setPlaceholders(OfflinePlayer player, String text) {
+        return usingPlaceholderAPI ? text : PlaceholderAPI.setPlaceholders(player, text);
     }
 
     public I18n i18n() {

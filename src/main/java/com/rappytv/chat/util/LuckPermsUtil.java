@@ -3,7 +3,6 @@ package com.rappytv.chat.util;
 import com.rappytv.chat.ChatPlugin;
 import com.rappytv.rylib.util.Colors;
 import com.rappytv.rylib.util.I18n;
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
@@ -75,7 +74,7 @@ public class LuckPermsUtil {
 
     private String getTabPrefix(Player player) {
         String prefix = getPrefix(player);
-        return prefix.isEmpty() ? "" : Colors.translateCodes(PlaceholderAPI.setPlaceholders(
+        return prefix.isEmpty() ? "" : Colors.translateCodes(ChatPlugin.setPlaceholders(
                 player,
                 plugin.i18n().translate(
                         "tab.prefix",
@@ -86,7 +85,7 @@ public class LuckPermsUtil {
 
     private String getTabSuffix(Player player) {
         String suffix = getSuffix(player);
-        return suffix.isEmpty() ? "" : Colors.translateCodes(PlaceholderAPI.setPlaceholders(
+        return suffix.isEmpty() ? "" : Colors.translateCodes(ChatPlugin.setPlaceholders(
                 player,
                 plugin.i18n().translate(
                         "tab.suffix",
