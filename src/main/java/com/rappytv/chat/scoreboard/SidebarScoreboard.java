@@ -18,7 +18,8 @@ public class SidebarScoreboard extends ScoreboardBuilder {
     public SidebarScoreboard(Player p) {
         super(p, plugin.i18n().translate("scoreboard.title"));
 
-        run();
+        int updateInterval = plugin.getConfig().getInt("i18n.scoreboard.updateInterval");
+        if(updateInterval != -1) run(updateInterval);
     }
 
     public static void init(ChatPlugin plugin) {
@@ -36,7 +37,7 @@ public class SidebarScoreboard extends ScoreboardBuilder {
         }
     }
 
-    private void run() {
+    private void run(int updateInterval) {
         runnable = new BukkitRunnable() {
             @Override
             public void run() {
@@ -47,6 +48,6 @@ public class SidebarScoreboard extends ScoreboardBuilder {
                 createScoreboard();
             }
         };
-        runnable.runTaskTimer(plugin, 0, 20 * 10);
+        runnable.runTaskTimer(plugin, 0, 20L * updateInterval);
     }
 }
