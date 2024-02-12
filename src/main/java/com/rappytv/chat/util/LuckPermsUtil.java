@@ -2,6 +2,7 @@ package com.rappytv.chat.util;
 
 import com.rappytv.chat.ChatPlugin;
 import com.rappytv.rylib.util.Colors;
+import com.rappytv.rylib.util.I18n;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
@@ -73,18 +74,24 @@ public class LuckPermsUtil {
 
     private String getTabPrefix(Player player) {
         String prefix = getPrefix(player);
-        return prefix.isEmpty() ? "" : Colors.translateCodes(
-                plugin.i18n().translate("tab.prefix")
-                        .replaceAll("<playerPrefix>", prefix)
-        );
+        return prefix.isEmpty() ? "" : Colors.translateCodes(ChatPlugin.setPlaceholders(
+                player,
+                plugin.i18n().translate(
+                        "tab.prefix",
+                        new I18n.Argument("playerPrefix", prefix)
+                )
+        ));
     }
 
     private String getTabSuffix(Player player) {
         String suffix = getSuffix(player);
-        return suffix.isEmpty() ? "" : Colors.translateCodes(
-                plugin.i18n().translate("tab.suffix")
-                        .replaceAll("<playerSuffix>", suffix)
-        );
+        return suffix.isEmpty() ? "" : Colors.translateCodes(ChatPlugin.setPlaceholders(
+                player,
+                plugin.i18n().translate(
+                        "tab.suffix",
+                        new I18n.Argument("playerSuffix", suffix)
+                )
+        ));
     }
 
     private ChatColor getNameColor() {

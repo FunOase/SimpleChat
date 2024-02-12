@@ -3,6 +3,7 @@ package com.rappytv.chat.commands;
 import com.rappytv.chat.ChatPlugin;
 import com.rappytv.rylib.RyLib;
 import com.rappytv.rylib.util.Command;
+import com.rappytv.rylib.util.I18n;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import org.bukkit.command.CommandSender;
@@ -36,8 +37,10 @@ public class Emoji extends Command<ChatPlugin> {
                 ? plugin.i18n().translate("command.emoji.activated")
                 : plugin.i18n().translate("command.emoji.deactivated");
         player.sendMessage(
-                plugin.i18n().translate("command.emoji.success")
-                        .replace("<state>", text)
+                plugin.i18n().translate(
+                        "command.emoji.success",
+                        new I18n.Argument("state", text)
+                )
         );
     }
 
