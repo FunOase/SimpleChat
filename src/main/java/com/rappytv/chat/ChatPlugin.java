@@ -25,7 +25,6 @@ public final class ChatPlugin extends JavaPlugin {
 
     public LuckPerms lp;
     private I18n i18n;
-    private static boolean usingPlaceholderAPI;
     private LuckPermsUtil luckPermsUtil;
 
     @Override
@@ -39,7 +38,10 @@ public final class ChatPlugin extends JavaPlugin {
                 "com.rappytv"
         );
 
-        loadPlaceholderAPI();
+        Plugin placeholderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
+        if(placeholderAPI == null || placeholderAPI.isEnabled())
+            getLogger().info("Not using PlaceholderAPI.");
+
         SidebarScoreboard.init(this);
         TablistScoreboard.init(this);
         LuckPerms provider = Bukkit.getServicesManager().load(LuckPerms.class);
@@ -65,18 +67,12 @@ public final class ChatPlugin extends JavaPlugin {
         new Emoji("emoji", this);
     }
 
-    private void loadPlaceholderAPI() {
-        Plugin placeholderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
-
-        if (placeholderAPI != null && placeholderAPI.isEnabled()) {
-            usingPlaceholderAPI = true;
-        } else {
-            getLogger().info("Not using PlaceholderAPI.");
-        }
-    }
-
     public static String setPlaceholders(OfflinePlayer player, String text) {
-        return usingPlaceholderAPI ? text : PlaceholderAPI.setPlaceholders(player, text);
+        try {
+            return PlaceholderAPI.setPlaceholders(player, text);
+        } catch (Throwable e) {
+            return text;
+        }
     }
 
     public I18n i18n() {
