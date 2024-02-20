@@ -3,10 +3,10 @@ checkForUpdates: true
 i18n:
   chat:
     margin: "&8»"
-    prefixFormat: '<playerPrefix> &8|'
-    suffixFormat: '&8[<playerSuffix>&8] '
+    prefixFormat: '<playerPrefix> &8| '
+    suffixFormat: ' &8[<playerSuffix>&8]'
     # The first %s is the playername and the second %s is the message. They can't be switched
-    message: "<margin1><prefixFormat> &7%s <suffixFormat>&8» &7%s<margin2>"
+    message: "<margin1><prefixFormat>&7%s<suffixFormat> &8» &7%s<margin2>"
     teamChat: "&8»\n&c&l@TEAM &8| &b<player> &8» &f<message>\n&8»"
   tab:
     prefix: "<playerPrefix> &8| "
