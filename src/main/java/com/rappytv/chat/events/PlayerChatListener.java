@@ -82,7 +82,7 @@ public class PlayerChatListener implements Listener {
                         ),
                         new I18n.Argument(
                                 "suffixFormat",
-                                !prefix.isEmpty() ? plugin.i18n().translate("chat.suffixFormat") : ""
+                                !suffix.isEmpty() ? plugin.i18n().translate("chat.suffixFormat") : ""
                         ),
                         new I18n.Argument("playerPrefix", prefix),
                         new I18n.Argument("playerSuffix", suffix),
