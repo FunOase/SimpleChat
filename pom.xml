@@ -6,7 +6,7 @@
 
     <groupId>com.rappytv</groupId>
     <artifactId>Chat</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
     <packaging>jar</packaging>
 
     <name>Chat</name>
@@ -87,7 +87,7 @@
         <dependency>
             <groupId>com.rappytv</groupId>
             <artifactId>RyLib</artifactId>
-            <version>1.0.23</version>
+            <version>1.0.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
