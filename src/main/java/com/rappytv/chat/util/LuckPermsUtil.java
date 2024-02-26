@@ -98,7 +98,7 @@ public class LuckPermsUtil {
     private ChatColor getNameColor(Player player) {
         return Permissions.getEnumValue(
                 player,
-                "chat.format.name",
+                "chat.name",
                 ChatColor.WHITE,
                 ChatColor.class
         );
