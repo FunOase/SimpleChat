@@ -37,6 +37,39 @@ permissions:
   chat.clear.bypass:
     default: op
 
+  chat.format.name.black:
+    default: false
+  chat.format.name.dark_blue:
+    default: false
+  chat.format.name.dark_green:
+    default: false
+  chat.format.name.dark_aqua:
+    default: false
+  chat.format.name.dark_red:
+    default: false
+  chat.format.name.dark_purple:
+    default: false
+  chat.format.name.gold:
+    default: false
+  chat.format.name.gray:
+    default: false
+  chat.format.name.dark_gray:
+    default: false
+  chat.format.name.blue:
+    default: false
+  chat.format.name.green:
+    default: false
+  chat.format.name.aqua:
+    default: false
+  chat.format.name.red:
+    default: false
+  chat.format.name.light_purple:
+    default: false
+  chat.format.name.yellow:
+    default: false
+  chat.format.name.white:
+    default: false
+
   chat.format.colors:
     default: op
   chat.format.colors.hex:
