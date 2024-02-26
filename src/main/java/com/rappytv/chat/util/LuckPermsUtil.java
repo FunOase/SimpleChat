@@ -3,6 +3,7 @@ package com.rappytv.chat.util;
 import com.rappytv.chat.ChatPlugin;
 import com.rappytv.rylib.util.Colors;
 import com.rappytv.rylib.util.I18n;
+import com.rappytv.rylib.util.Permissions;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
@@ -94,13 +95,13 @@ public class LuckPermsUtil {
         ));
     }
 
-    private ChatColor getNameColor() {
-        try {
-            return ChatColor.valueOf(plugin.i18n().translate("tab.color"));
-        } catch (IllegalArgumentException e) {
-            plugin.getLogger().severe("Invalid tab name color!");
-            return ChatColor.WHITE;
-        }
+    private ChatColor getNameColor(Player player) {
+        return Permissions.getEnumValue(
+                player,
+                "chat.format.name",
+                ChatColor.WHITE,
+                ChatColor.class
+        );
     }
 
     public void setTabPrefix(Player player) {
@@ -130,7 +131,7 @@ public class LuckPermsUtil {
 
             team.setPrefix(prefix);
             team.setSuffix(suffix);
-            team.setColor(getNameColor());
+            team.setColor(getNameColor(target));
             team.addEntry(target.getName());
         }
 
@@ -151,7 +152,7 @@ public class LuckPermsUtil {
 
                 team.setPrefix(prefix);
                 team.setSuffix(suffix);
-                team.setColor(getNameColor());
+                team.setColor(getNameColor(player));
                 team.addEntry(player.getName());
             }
         }
