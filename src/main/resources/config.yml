@@ -10,17 +10,20 @@ i18n:
     teamChat: "&8»\n&c&l@TEAM &8| &b<player> &8» &f<message>\n&8»"
   tab:
     prefix: "<playerPrefix> &8| "
-    color: "GRAY"
+    defaultColor: "GRAY"
     suffix: " &8[<playerSuffix>&8]"
 
-    # -1 to disable. Please only use this if you use placeholders which can change over time
+    # To enable tab header and footer. Doesn't affect prefix, defaultColor or suffix.
+    enabled: false
+    # -1 to disable updating. Please only use this if you use placeholders which can change over time
     updateInterval: -1
-    header:
+    header: |-
       ---> Servername <---
-    footer:
+    footer: |-
       Tablist Footer
   scoreboard:
-    # -1 to disable. Please only use this if you use placeholders which can change over time
+    enabled: false
+    # -1 to disable updating. Please only use this if you use placeholders which can change over time
     updateInterval: -1
     title: '  SERVERNAME  '
     scores:
@@ -35,13 +38,14 @@ i18n:
 
   command:
     chat:
-      usage: '<cmd> <on|off>'
+      invalidSubcommand: '<prefix> &cBitte gib einen gültigen Subcommand an!'
       alreadyOn: '<prefix> §cDer Chat ist bereits aktiviert!'
       alreadyOff: '<prefix> §cDer Chat ist bereits deaktiviert!'
       successOn: '<prefix> Der Chat wurde erfolgreich §baktiviert§7!'
       successOff: '<prefix> Der Chat wurde erfolgreich §bdeaktiviert§7!'
       announceOn: '<prefix> Der Chat wurde §baktiviert§7!'
       announceOff: '<prefix> Der Chat wurde §bdeaktiviert§7!'
+      reloaded: '<prefix> Die Config wurde reloaded!'
     chatclear:
       console: Konsole
       success: '<prefix> Der Chat wurde gerade von §b<staff> §7gecleart!'
