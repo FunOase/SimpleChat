@@ -3,11 +3,11 @@ package com.rappytv.chat.commands;
 import com.rappytv.chat.ChatPlugin;
 import com.rappytv.rylib.RyLib;
 import com.rappytv.rylib.util.Command;
-import com.rappytv.rylib.util.I18n;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,14 +27,8 @@ public class Chat extends Command<ChatPlugin> {
                 return;
             }
         }
-        if(args.length < 1 || !Arrays.asList("on", "off").contains(args[0])) {
-            sender.sendMessage(
-                    RyLib.get().i18n().translate(
-                            "usage",
-                            new I18n.Argument("usage", plugin.i18n().translate("command.chat.usage")),
-                            new I18n.Argument("cmd", prefix)
-                    )
-            );
+        if(args.length < 1) {
+            sender.sendMessage(plugin.i18n().translate("command.chat.invalidSubcommand"));
             return;
         }
         if(args[0].equalsIgnoreCase("on")) {
@@ -67,13 +61,27 @@ public class Chat extends Command<ChatPlugin> {
             for(Player all : Bukkit.getOnlinePlayers()) {
                 all.sendMessage(plugin.i18n().translate("command.chat.announceOff"));
             }
+        } else if(args[0].equalsIgnoreCase("reload")) {
+            if(!sender.hasPermission("chat.reload")) {
+                sender.sendMessage(RyLib.get().i18n().translate("noPermission"));
+                return;
+            }
+
+            plugin.reloadConfig();
+            sender.sendMessage(plugin.i18n().translate("command.chat.reloaded"));
+        } else {
+            sender.sendMessage(plugin.i18n().translate("command.chat.invalidSubcommand"));
         }
     }
 
     @Override
     public List<String> complete(CommandSender sender, String prefix, String[] args) {
-        if(args.length == 1)
-            return Arrays.asList("on", "off");
+        if(args.length == 1) {
+            List<String> list = new ArrayList<>();
+            if(sender.hasPermission("chat.manage")) list.addAll(Arrays.asList("on", "off"));
+            if(sender.hasPermission("chat.reload")) list.add("reload");
+            return tab(args[0], list);
+        }
         return null;
     }
 
