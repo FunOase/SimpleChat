@@ -31,6 +31,8 @@ permissions:
         default: op
       chat.manage.bypass:
         default: op
+      chat.reload:
+        default: op
 
   chat.clear:
     default: op
