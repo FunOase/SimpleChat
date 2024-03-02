@@ -96,10 +96,18 @@ public class LuckPermsUtil {
     }
 
     private ChatColor getNameColor(Player player) {
+        ChatColor defaultColor;
+        try {
+            defaultColor = ChatColor.valueOf(plugin.i18n().translate("tab.defaultColor").toUpperCase());
+        } catch (IllegalArgumentException e) {
+            plugin.getLogger().severe("Invalid default tab color!");
+            defaultColor = ChatColor.WHITE;
+        }
+
         return Permissions.getEnumValue(
                 player,
                 "chat.name",
-                ChatColor.WHITE,
+                defaultColor,
                 ChatColor.class
         );
     }
