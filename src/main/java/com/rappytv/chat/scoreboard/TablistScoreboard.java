@@ -14,6 +14,7 @@ public class TablistScoreboard {
     public TablistScoreboard(Player player) {
         this.player = player;
 
+        update();
         int updateInterval = plugin.getConfig().getInt("i18n.tab.updateInterval");
         if(updateInterval != -1) run(updateInterval);
     }
