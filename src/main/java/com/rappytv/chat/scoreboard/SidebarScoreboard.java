@@ -16,7 +16,7 @@ public class SidebarScoreboard extends ScoreboardBuilder {
     private BukkitRunnable runnable;
 
     public SidebarScoreboard(Player p) {
-        super(p, plugin.i18n().translate("scoreboard.title"));
+        super(p, Colors.translateCodes(ChatPlugin.setPlaceholders(p, plugin.i18n().translate("scoreboard.title"))));
 
         int updateInterval = plugin.getConfig().getInt("i18n.scoreboard.updateInterval");
         if(updateInterval != -1) run(updateInterval);
@@ -33,7 +33,7 @@ public class SidebarScoreboard extends ScoreboardBuilder {
     public void createScoreboard() {
         List<String> scores = Lists.reverse(plugin.getConfig().getStringList("i18n.scoreboard.scores"));
         for(int i = 0; i < scores.size(); i++) {
-            setScore(ChatPlugin.setPlaceholders(player, Colors.translateCodes(scores.get(i))), i);
+            setScore(Colors.translateCodes(ChatPlugin.setPlaceholders(player, scores.get(i))), i);
         }
     }
 

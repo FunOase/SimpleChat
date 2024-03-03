@@ -1,6 +1,7 @@
 package com.rappytv.chat.scoreboard;
 
 import com.rappytv.chat.ChatPlugin;
+import com.rappytv.rylib.util.Colors;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -27,8 +28,8 @@ public class TablistScoreboard {
     }
 
     public void update() {
-        String header = "\n" + ChatPlugin.setPlaceholders(player, plugin.i18n().translate("tab.header")) + "\n";
-        String footer = "\n" + ChatPlugin.setPlaceholders(player, plugin.i18n().translate("tab.footer")) + "\n";
+        String header = "\n" + Colors.translateCodes(ChatPlugin.setPlaceholders(player, plugin.i18n().translate("tab.header"))) + "\n";
+        String footer = "\n" + Colors.translateCodes(ChatPlugin.setPlaceholders(player, plugin.i18n().translate("tab.footer"))) + "\n";
 
         player.setPlayerListHeader(header);
         player.setPlayerListFooter(footer);
