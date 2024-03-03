@@ -28,8 +28,8 @@ public class TablistScoreboard {
     }
 
     public void update() {
-        String header = "\n" + Colors.translateCodes(ChatPlugin.setPlaceholders(player, plugin.i18n().translate("tab.header"))) + "\n";
-        String footer = "\n" + Colors.translateCodes(ChatPlugin.setPlaceholders(player, plugin.i18n().translate("tab.footer"))) + "\n";
+        String header = Colors.translateCodes(ChatPlugin.setPlaceholders(player, plugin.i18n().translate("tab.header")));
+        String footer = Colors.translateCodes(ChatPlugin.setPlaceholders(player, plugin.i18n().translate("tab.footer")));
 
         player.setPlayerListHeader(header);
         player.setPlayerListFooter(footer);
