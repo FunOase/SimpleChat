@@ -74,25 +74,25 @@ public class LuckPermsUtil {
     }
 
     private String getTabPrefix(Player player) {
-        String prefix = getPrefix(player);
-        return prefix.isEmpty() ? "" : Colors.translateCodes(ChatPlugin.setPlaceholders(
+        String prefix = Colors.translateCodes(ChatPlugin.setPlaceholders(
                 player,
                 plugin.i18n().translate(
                         "tab.prefix",
-                        new I18n.Argument("playerPrefix", prefix)
+                        new I18n.Argument("playerPrefix", getPrefix(player))
                 )
         ));
+        return prefix.isBlank() ? "" : prefix;
     }
 
     private String getTabSuffix(Player player) {
-        String suffix = getSuffix(player);
-        return suffix.isEmpty() ? "" : Colors.translateCodes(ChatPlugin.setPlaceholders(
+        String suffix = Colors.translateCodes(ChatPlugin.setPlaceholders(
                 player,
                 plugin.i18n().translate(
                         "tab.suffix",
-                        new I18n.Argument("playerSuffix", suffix)
+                        new I18n.Argument("playerSuffix", getSuffix(player))
                 )
         ));
+        return suffix.isBlank() ? "" : suffix;
     }
 
     private ChatColor getNameColor(Player player) {
