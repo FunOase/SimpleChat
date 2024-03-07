@@ -1,6 +1,6 @@
-package com.rappytv.chat.commands;
+package com.rappytv.rychat.commands;
 
-import com.rappytv.chat.RyChat;
+import com.rappytv.rychat.RyChat;
 import com.rappytv.rylib.RyLib;
 import com.rappytv.rylib.util.Command;
 import org.bukkit.Bukkit;

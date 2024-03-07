@@ -1,6 +1,6 @@
-package com.rappytv.chat.util;
+package com.rappytv.rychat.util;
 
-import com.rappytv.chat.RyChat;
+import com.rappytv.rychat.RyChat;
 import com.rappytv.rylib.util.Colors;
 import com.rappytv.rylib.util.I18n;
 import com.rappytv.rylib.util.Permissions;

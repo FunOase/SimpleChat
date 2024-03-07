@@ -1,6 +1,6 @@
-package com.rappytv.chat.scoreboard;
+package com.rappytv.rychat.scoreboard;
 
-import com.rappytv.chat.RyChat;
+import com.rappytv.rychat.RyChat;
 import com.rappytv.rylib.util.Colors;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

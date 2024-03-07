@@ -1,7 +1,7 @@
-package com.rappytv.chat.events;
+package com.rappytv.rychat.events;
 
-import com.rappytv.chat.RyChat;
-import com.rappytv.chat.commands.Chat;
+import com.rappytv.rychat.RyChat;
+import com.rappytv.rychat.commands.Chat;
 import com.rappytv.rylib.util.Colors;
 import com.rappytv.rylib.util.I18n;
 import org.bukkit.Bukkit;

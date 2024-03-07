@@ -1,7 +1,7 @@
-package com.rappytv.chat.scoreboard;
+package com.rappytv.rychat.scoreboard;
 
 import com.google.common.collect.Lists;
-import com.rappytv.chat.RyChat;
+import com.rappytv.rychat.RyChat;
 import com.rappytv.rylib.scoreboard.ScoreboardBuilder;
 import com.rappytv.rylib.util.Colors;
 import org.bukkit.Bukkit;

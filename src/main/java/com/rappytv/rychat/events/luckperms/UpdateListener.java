@@ -1,6 +1,6 @@
-package com.rappytv.chat.events.luckperms;
+package com.rappytv.rychat.events.luckperms;
 
-import com.rappytv.chat.RyChat;
+import com.rappytv.rychat.RyChat;
 import net.luckperms.api.event.EventBus;
 import net.luckperms.api.event.user.UserDataRecalculateEvent;
 import net.luckperms.api.event.user.track.UserDemoteEvent;
