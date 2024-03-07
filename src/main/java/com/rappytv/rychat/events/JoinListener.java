@@ -1,8 +1,8 @@
-package com.rappytv.chat.events;
+package com.rappytv.rychat.events;
 
-import com.rappytv.chat.ChatPlugin;
-import com.rappytv.chat.scoreboard.SidebarScoreboard;
-import com.rappytv.chat.scoreboard.TablistScoreboard;
+import com.rappytv.rychat.RyChat;
+import com.rappytv.rychat.scoreboard.SidebarScoreboard;
+import com.rappytv.rychat.scoreboard.TablistScoreboard;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -11,9 +11,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class JoinListener implements Listener {
 
-    private final ChatPlugin plugin;
+    private final RyChat plugin;
 
-    public JoinListener(ChatPlugin plugin) {
+    public JoinListener(RyChat plugin) {
         this.plugin = plugin;
     }
 

@@ -1,14 +1,14 @@
-package com.rappytv.chat;
+package com.rappytv.rychat;
 
-import com.rappytv.chat.commands.Chat;
-import com.rappytv.chat.commands.ChatClear;
-import com.rappytv.chat.commands.Emoji;
-import com.rappytv.chat.events.JoinListener;
-import com.rappytv.chat.events.PlayerChatListener;
-import com.rappytv.chat.events.luckperms.UpdateListener;
-import com.rappytv.chat.scoreboard.SidebarScoreboard;
-import com.rappytv.chat.scoreboard.TablistScoreboard;
-import com.rappytv.chat.util.LuckPermsUtil;
+import com.rappytv.rychat.commands.Chat;
+import com.rappytv.rychat.commands.ChatClear;
+import com.rappytv.rychat.commands.Emoji;
+import com.rappytv.rychat.events.JoinListener;
+import com.rappytv.rychat.events.PlayerChatListener;
+import com.rappytv.rychat.events.luckperms.UpdateListener;
+import com.rappytv.rychat.scoreboard.SidebarScoreboard;
+import com.rappytv.rychat.scoreboard.TablistScoreboard;
+import com.rappytv.rychat.util.LuckPermsUtil;
 import com.rappytv.rylib.util.I18n;
 import com.rappytv.rylib.util.UpdateChecker;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -21,7 +21,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class ChatPlugin extends JavaPlugin {
+public final class RyChat extends JavaPlugin {
 
     public LuckPerms lp;
     private I18n i18n;

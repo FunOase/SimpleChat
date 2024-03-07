@@ -1,7 +1,7 @@
-package com.rappytv.chat.events;
+package com.rappytv.rychat.events;
 
-import com.rappytv.chat.ChatPlugin;
-import com.rappytv.chat.commands.Chat;
+import com.rappytv.rychat.RyChat;
+import com.rappytv.rychat.commands.Chat;
 import com.rappytv.rylib.util.Colors;
 import com.rappytv.rylib.util.I18n;
 import org.bukkit.Bukkit;
@@ -13,9 +13,9 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 @SuppressWarnings("ConstantConditions")
 public class PlayerChatListener implements Listener {
 
-    private final ChatPlugin plugin;
+    private final RyChat plugin;
 
-    public PlayerChatListener(ChatPlugin plugin) {
+    public PlayerChatListener(RyChat plugin) {
         this.plugin = plugin;
     }
 
@@ -23,12 +23,12 @@ public class PlayerChatListener implements Listener {
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        if(!Chat.isEnabled() && !player.hasPermission("chat.manage.bypass")) {
+        if(!Chat.isEnabled() && !player.hasPermission("rychat.manage.bypass")) {
             player.sendMessage(plugin.i18n().translate("listener.chatOff"));
             event.setCancelled(true);
             return;
         }
-        if(player.hasPermission("chat.emojis")) {
+        if(player.hasPermission("rychat.emojis")) {
             String message = event.getMessage();
             if(!plugin.getConfig().contains("emojis")) {
                 plugin.getLogger().severe("Emoji list has to be set!");
@@ -44,7 +44,7 @@ public class PlayerChatListener implements Listener {
             }
         }
         event.setMessage(Colors.translatePlayerCodes(player, event.getMessage(), "chat.format"));
-        if((event.getMessage().toLowerCase().startsWith("@team") || event.getMessage().toLowerCase().startsWith("@t")) && player.hasPermission("chat.team")) {
+        if((event.getMessage().toLowerCase().startsWith("@team") || event.getMessage().toLowerCase().startsWith("@t")) && player.hasPermission("rychat.team")) {
             event.setCancelled(true);
             String msg = event.getMessage();
             String[] words = msg.split(" ");
@@ -55,8 +55,8 @@ public class PlayerChatListener implements Listener {
             String teamMessage = msg.substring(words[0].length() + 1);
 
             for(Player all : Bukkit.getOnlinePlayers()) {
-                if(all.hasPermission("chat.team"))
-                    all.sendMessage(Colors.translateCodes(ChatPlugin.setPlaceholders(
+                if(all.hasPermission("rychat.team"))
+                    all.sendMessage(Colors.translateCodes(RyChat.setPlaceholders(
                             player,
                             plugin.i18n().translate(
                                     "chat.teamChat",
@@ -68,11 +68,11 @@ public class PlayerChatListener implements Listener {
             return;
         }
 
-        boolean margin = player.hasPermission("chat.format.margin");
+        boolean margin = player.hasPermission("rychat.format.margin");
         String marginText = plugin.i18n().translate("chat.margin");
         String prefix = plugin.getLuckPermsUtil().getPrefix(player);
         String suffix = plugin.getLuckPermsUtil().getSuffix(player);
-        event.setFormat(Colors.translateCodes(ChatPlugin.setPlaceholders(
+        event.setFormat(Colors.translateCodes(RyChat.setPlaceholders(
                 player,
                 plugin.i18n().translate(
                         "chat.message",

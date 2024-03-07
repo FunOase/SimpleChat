@@ -1,6 +1,6 @@
-package com.rappytv.chat.commands;
+package com.rappytv.rychat.commands;
 
-import com.rappytv.chat.ChatPlugin;
+import com.rappytv.rychat.RyChat;
 import com.rappytv.rylib.RyLib;
 import com.rappytv.rylib.util.Command;
 import org.bukkit.Bukkit;
@@ -11,18 +11,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Chat extends Command<ChatPlugin> {
+public class Chat extends Command<RyChat> {
 
     private static boolean enabled = true;
 
-    public Chat(String name, ChatPlugin plugin) {
+    public Chat(String name, RyChat plugin) {
         super(name, plugin);
     }
 
     @Override
     public void execute(CommandSender sender, String prefix, String[] args) {
         if(sender instanceof Player player) {
-            if (!player.hasPermission("chat.manage")) {
+            if (!player.hasPermission("rychat.manage")) {
                 player.sendMessage(RyLib.get().i18n().translate("noPermission"));
                 return;
             }
@@ -32,7 +32,7 @@ public class Chat extends Command<ChatPlugin> {
             return;
         }
         if(args[0].equalsIgnoreCase("on")) {
-            if(!sender.hasPermission("chat.manage.enable")) {
+            if(!sender.hasPermission("rychat.manage.enable")) {
                 sender.sendMessage(RyLib.get().i18n().translate("noPermission"));
                 return;
             }
@@ -47,7 +47,7 @@ public class Chat extends Command<ChatPlugin> {
                 all.sendMessage(plugin.i18n().translate("command.chat.announceOn"));
             }
         } else if(args[0].equalsIgnoreCase("off")) {
-            if(!sender.hasPermission("chat.manage.disable")) {
+            if(!sender.hasPermission("rychat.manage.disable")) {
                 sender.sendMessage(RyLib.get().i18n().translate("noPermission"));
                 return;
             }
@@ -62,7 +62,7 @@ public class Chat extends Command<ChatPlugin> {
                 all.sendMessage(plugin.i18n().translate("command.chat.announceOff"));
             }
         } else if(args[0].equalsIgnoreCase("reload")) {
-            if(!sender.hasPermission("chat.reload")) {
+            if(!sender.hasPermission("rychat.reload")) {
                 sender.sendMessage(RyLib.get().i18n().translate("noPermission"));
                 return;
             }
@@ -78,8 +78,8 @@ public class Chat extends Command<ChatPlugin> {
     public List<String> complete(CommandSender sender, String prefix, String[] args) {
         if(args.length == 1) {
             List<String> list = new ArrayList<>();
-            if(sender.hasPermission("chat.manage")) list.addAll(Arrays.asList("on", "off"));
-            if(sender.hasPermission("chat.reload")) list.add("reload");
+            if(sender.hasPermission("rychat.manage")) list.addAll(Arrays.asList("on", "off"));
+            if(sender.hasPermission("rychat.reload")) list.add("reload");
             return tab(args[0], list);
         }
         return null;

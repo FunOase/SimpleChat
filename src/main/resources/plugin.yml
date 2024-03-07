@@ -1,6 +1,6 @@
-name: Chat
+name: RyChat
 version: '${project.version}'
-main: com.rappytv.chat.ChatPlugin
+main: com.rappytv.rychat.RyChat
 api-version: 1.20
 authors: [ RappyTV ]
 depend:
@@ -11,88 +11,88 @@ softdepend:
 
 commands:
   chat:
-    permission: chat.manage
+    permission: rychat.manage
   chatclear:
     aliases: [ cc ]
-    permission: chat.clear
+    permission: rychat.clear
   emoji:
     aliases: [ emojis ]
-    permission: chat.emojis.toggle
+    permission: rychat.emojis.toggle
 
 permissions:
-  chat.manage.*:
+  rychat.manage.*:
     default: op
     children:
-      chat.manage:
+      rychat.manage:
         default: op
-      chat.manage.enable:
+      rychat.manage.enable:
         default: op
-      chat.manage.disable:
+      rychat.manage.disable:
         default: op
-      chat.manage.bypass:
+      rychat.manage.bypass:
         default: op
-      chat.reload:
+      rychat.reload:
         default: op
 
-  chat.clear:
+  rychat.clear:
     default: op
-  chat.clear.bypass:
-    default: op
-
-  chat.name.black:
-    default: false
-  chat.name.dark_blue:
-    default: false
-  chat.name.dark_green:
-    default: false
-  chat.name.dark_aqua:
-    default: false
-  chat.name.dark_red:
-    default: false
-  chat.name.dark_purple:
-    default: false
-  chat.name.gold:
-    default: false
-  chat.name.gray:
-    default: false
-  chat.name.dark_gray:
-    default: false
-  chat.name.blue:
-    default: false
-  chat.name.green:
-    default: false
-  chat.name.aqua:
-    default: false
-  chat.name.red:
-    default: false
-  chat.name.light_purple:
-    default: false
-  chat.name.yellow:
-    default: false
-  chat.name.white:
-    default: false
-
-  chat.format.colors:
-    default: op
-  chat.format.colors.hex:
-    default: op
-  chat.format.bold:
-    default: op
-  chat.format.italic:
-    default: op
-  chat.format.underline:
-    default: op
-  chat.format.strikethrough:
-    default: op
-  chat.format.magic:
-    default: op
-  chat.format.margin:
+  rychat.clear.bypass:
     default: op
 
-  chat.emojis:
+  rychat.name.black:
+    default: false
+  rychat.name.dark_blue:
+    default: false
+  rychat.name.dark_green:
+    default: false
+  rychat.name.dark_aqua:
+    default: false
+  rychat.name.dark_red:
+    default: false
+  rychat.name.dark_purple:
+    default: false
+  rychat.name.gold:
+    default: false
+  rychat.name.gray:
+    default: false
+  rychat.name.dark_gray:
+    default: false
+  rychat.name.blue:
+    default: false
+  rychat.name.green:
+    default: false
+  rychat.name.aqua:
+    default: false
+  rychat.name.red:
+    default: false
+  rychat.name.light_purple:
+    default: false
+  rychat.name.yellow:
+    default: false
+  rychat.name.white:
+    default: false
+
+  rychat.format.colors:
     default: op
-  chat.emojis.toggle:
+  rychat.format.colors.hex:
+    default: op
+  rychat.format.bold:
+    default: op
+  rychat.format.italic:
+    default: op
+  rychat.format.underline:
+    default: op
+  rychat.format.strikethrough:
+    default: op
+  rychat.format.magic:
+    default: op
+  rychat.format.margin:
     default: op
 
-  chat.team:
+  rychat.emojis:
+    default: op
+  rychat.emojis.toggle:
+    default: op
+
+  rychat.team:
     default: op
