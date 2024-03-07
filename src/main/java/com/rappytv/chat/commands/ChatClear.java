@@ -1,6 +1,6 @@
 package com.rappytv.chat.commands;
 
-import com.rappytv.chat.ChatPlugin;
+import com.rappytv.chat.RyChat;
 import com.rappytv.rylib.RyLib;
 import com.rappytv.rylib.util.Command;
 import com.rappytv.rylib.util.I18n;
@@ -10,15 +10,15 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class ChatClear extends Command<ChatPlugin> {
+public class ChatClear extends Command<RyChat> {
 
-    public ChatClear(String name, ChatPlugin plugin) {
+    public ChatClear(String name, RyChat plugin) {
         super(name, plugin);
     }
 
     @Override
     public void execute(CommandSender sender, String prefix, String[] args) {
-        if(!sender.hasPermission("chat.clear")) {
+        if(!sender.hasPermission("rychat.clear")) {
             sender.sendMessage(RyLib.get().i18n().translate("noPermission"));
             return;
         }
@@ -27,7 +27,7 @@ public class ChatClear extends Command<ChatPlugin> {
                 ? sender.getName()
                 : plugin.i18n().translate("command.chatclear.console");
         for(Player player : Bukkit.getOnlinePlayers()) {
-            if(!player.hasPermission("chat.clear.bypass"))
+            if(!player.hasPermission("rychat.clear.bypass"))
                 player.sendMessage("§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n");
             player.sendMessage(
                     plugin.i18n().translate(

@@ -21,7 +21,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class ChatPlugin extends JavaPlugin {
+public final class RyChat extends JavaPlugin {
 
     public LuckPerms lp;
     private I18n i18n;
