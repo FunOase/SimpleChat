@@ -1,6 +1,6 @@
 name: RyChat
 version: '${project.version}'
-main: com.rappytv.chat.RyChat
+main: com.rappytv.rychat.RyChat
 api-version: 1.20
 authors: [ RappyTV ]
 depend:
