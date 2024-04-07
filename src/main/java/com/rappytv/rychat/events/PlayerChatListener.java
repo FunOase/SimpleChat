@@ -4,7 +4,9 @@ import com.rappytv.rychat.RyChat;
 import com.rappytv.rychat.commands.Chat;
 import com.rappytv.rylib.util.Colors;
 import com.rappytv.rylib.util.I18n;
+import com.rappytv.rylib.util.Permissions;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,6 +24,7 @@ public class PlayerChatListener implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
+        String message = event.getMessage();
 
         if(!Chat.isEnabled() && !player.hasPermission("rychat.manage.bypass")) {
             player.sendMessage(plugin.i18n().translate("listener.chatOff"));
@@ -29,7 +32,6 @@ public class PlayerChatListener implements Listener {
             return;
         }
         if(player.hasPermission("rychat.emojis")) {
-            String message = event.getMessage();
             if(!plugin.getConfig().contains("emojis")) {
                 plugin.getLogger().severe("Emoji list has to be set!");
             } else {
@@ -44,29 +46,63 @@ public class PlayerChatListener implements Listener {
             }
         }
         event.setMessage(Colors.translatePlayerCodes(player, event.getMessage(), "chat.format"));
-        if((event.getMessage().toLowerCase().startsWith("@team") || event.getMessage().toLowerCase().startsWith("@t")) && player.hasPermission("rychat.team")) {
+
+        String[] words = message.split(" ");
+        for(String sectionName : plugin.getConfig().getConfigurationSection("chats").getKeys(false)) {
+            ConfigurationSection section = plugin.getConfig().getConfigurationSection("chats." + sectionName);
+            String permission = section.getString("permission");
+            boolean hasPermission = Permissions.hasExactPermission(
+                    player,
+                    "rychat.chat.*"
+            ) || Permissions.hasExactPermission(
+                    player,
+                    permission
+            );
+            if(!hasPermission || !section.getStringList("triggers").contains(words[0])) continue;
             event.setCancelled(true);
-            String msg = event.getMessage();
-            String[] words = msg.split(" ");
             if(words.length < 2) {
                 player.sendMessage(plugin.i18n().translate("listener.enterText"));
                 return;
             }
-            String teamMessage = msg.substring(words[0].length() + 1);
-
-            for(Player all : Bukkit.getOnlinePlayers()) {
-                if(all.hasPermission("rychat.team"))
-                    all.sendMessage(Colors.translateCodes(RyChat.setPlaceholders(
+            String chatMessage = message.substring(words[0].length() + 1);
+            for(Player target : Bukkit.getOnlinePlayers()) {
+                if(Permissions.hasExactPermission(target, "rychat.chat.*") || Permissions.hasExactPermission(target, permission))
+                    target.sendMessage(Colors.translateCodes(RyChat.setPlaceholders(
                             player,
                             plugin.i18n().translate(
-                                    "chat.teamChat",
+                                    "chat.chats",
+                                    new I18n.Argument("name", section.getString("name")),
                                     new I18n.Argument("player", player.getName()),
-                                    new I18n.Argument("message", teamMessage)
+                                    new I18n.Argument("message", chatMessage)
                             )
                     )));
             }
             return;
         }
+//        if((event.getMessage().toLowerCase().startsWith("@team") || event.getMessage().toLowerCase().startsWith("@t")) && player.hasPermission("rychat.team")) {
+//            event.setCancelled(true);
+//            String msg = event.getMessage();
+//            String[] words = msg.split(" ");
+//
+//            if(words.length < 2) {
+//                player.sendMessage(plugin.i18n().translate("listener.enterText"));
+//                return;
+//            }
+//            String teamMessage = msg.substring(words[0].length() + 1);
+//
+//            for(Player all : Bukkit.getOnlinePlayers()) {
+//                if(all.hasPermission("rychat.team"))
+//                    all.sendMessage(Colors.translateCodes(RyChat.setPlaceholders(
+//                            player,
+//                            plugin.i18n().translate(
+//                                    "chat.teamChat",
+//                                    new I18n.Argument("player", player.getName()),
+//                                    new I18n.Argument("message", teamMessage)
+//                            )
+//                    )));
+//            }
+//            return;
+//        }
 
         boolean margin = player.hasPermission("rychat.format.margin");
         String marginText = plugin.i18n().translate("chat.margin");

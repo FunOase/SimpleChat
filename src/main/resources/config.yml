@@ -1,5 +1,13 @@
 checkForUpdates: true
 
+chats:
+  team:
+    name: '&c&l@TEAM'
+    permission: rychat.chat.team
+    triggers: # Don't use spaces
+      - '@team'
+      - '@t'
+
 i18n:
   chat:
     margin: "&8»"
@@ -7,7 +15,10 @@ i18n:
     suffixFormat: ' &8[<playerSuffix>&8]'
     # The first %s is the playername and the second %s is the message. They can't be switched
     message: "<margin1><prefixFormat>&7%s<suffixFormat> &8» &7%s<margin2>"
-    teamChat: "&8»\n&c&l@TEAM &8| &b<player> &8» &f<message>\n&8»"
+    chats: |- # You can use <name> (The chat's name), <player>, <message> and PlaceHolderAPI placeholders
+      &8»
+      <name> &8| &b<player> &8» &f<message>
+      &8»
   tab:
     prefix: "<playerPrefix> &8| "
     defaultColor: "GRAY"
