@@ -66,7 +66,7 @@ public class PlayerChatListener implements Listener {
             }
             String chatMessage = message.substring(words[0].length() + 1);
             for(Player target : Bukkit.getOnlinePlayers()) {
-                if(target.hasPermission("rychat.chat.*") || Permissions.hasExactPermission(target, permission))
+                if(Permissions.hasExactPermission(target, "rychat.chat.*") || Permissions.hasExactPermission(target, permission))
                     target.sendMessage(Colors.translateCodes(RyChat.setPlaceholders(
                             player,
                             plugin.i18n().translate(
