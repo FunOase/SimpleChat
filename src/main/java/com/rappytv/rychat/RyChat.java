@@ -32,10 +32,14 @@ public final class RyChat extends JavaPlugin {
         registerAll();
         saveDefaultConfig();
         i18n = new I18n(this);
-        new UpdateChecker<>(this).setArtifactFormat(
+        new UpdateChecker<>(
+                this,
+                () -> getConfig().getBoolean("checkForUpdates")
+        ).setArtifactFormat(
                 "ci.rappytv.com",
                 getName(),
-                "com.rappytv"
+                "com.rappytv",
+                "Minecraft Plugins"
         );
 
         Plugin placeholderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
