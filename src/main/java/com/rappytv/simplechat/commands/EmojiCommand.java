@@ -11,9 +11,9 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class Emoji extends Command<SimpleChat> {
+public class EmojiCommand extends Command<SimpleChat> {
 
-    public Emoji(String name, SimpleChat plugin) {
+    public EmojiCommand(String name, SimpleChat plugin) {
         super(name, plugin);
     }
 

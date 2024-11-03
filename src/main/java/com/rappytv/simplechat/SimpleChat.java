@@ -1,8 +1,8 @@
 package com.rappytv.simplechat;
 
-import com.rappytv.simplechat.commands.Chat;
-import com.rappytv.simplechat.commands.ChatClear;
-import com.rappytv.simplechat.commands.Emoji;
+import com.rappytv.simplechat.commands.ChatCommand;
+import com.rappytv.simplechat.commands.ChatClearCommand;
+import com.rappytv.simplechat.commands.EmojiCommand;
 import com.rappytv.simplechat.events.JoinListener;
 import com.rappytv.simplechat.events.PlayerChatListener;
 import com.rappytv.simplechat.events.luckperms.UpdateListener;
@@ -56,9 +56,9 @@ public final class SimpleChat extends JavaPlugin {
         pm.registerEvents(new JoinListener(this), this);
         pm.registerEvents(new PlayerChatListener(this), this);
 
-        new Chat("chat", this);
-        new ChatClear("chatclear", this);
-        new Emoji("emoji", this);
+        new ChatCommand("chat", this);
+        new ChatClearCommand("chatclear", this);
+        new EmojiCommand("emoji", this);
     }
 
     public static String setPlaceholders(OfflinePlayer player, String text) {

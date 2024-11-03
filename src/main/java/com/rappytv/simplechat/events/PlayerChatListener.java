@@ -1,7 +1,7 @@
 package com.rappytv.simplechat.events;
 
 import com.rappytv.simplechat.SimpleChat;
-import com.rappytv.simplechat.commands.Chat;
+import com.rappytv.simplechat.commands.ChatCommand;
 import com.rappytv.rylib.util.Colors;
 import com.rappytv.rylib.util.I18n;
 import com.rappytv.rylib.util.Permissions;
@@ -26,7 +26,7 @@ public class PlayerChatListener implements Listener {
         Player player = event.getPlayer();
         String message = event.getMessage();
 
-        if(!Chat.isEnabled() && !player.hasPermission("simplechat.manage.bypass")) {
+        if(!ChatCommand.isEnabled() && !player.hasPermission("simplechat.manage.bypass")) {
             player.sendMessage(plugin.i18n().translate("listener.chatOff"));
             event.setCancelled(true);
             return;

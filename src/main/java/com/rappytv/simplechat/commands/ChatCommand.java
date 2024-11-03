@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Chat extends Command<SimpleChat> {
+public class ChatCommand extends Command<SimpleChat> {
 
     private static boolean enabled = true;
 
-    public Chat(String name, SimpleChat plugin) {
+    public ChatCommand(String name, SimpleChat plugin) {
         super(name, plugin);
     }
 

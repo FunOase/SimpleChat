@@ -10,9 +10,9 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class ChatClear extends Command<SimpleChat> {
+public class ChatClearCommand extends Command<SimpleChat> {
 
-    public ChatClear(String name, SimpleChat plugin) {
+    public ChatClearCommand(String name, SimpleChat plugin) {
         super(name, plugin);
     }
 
