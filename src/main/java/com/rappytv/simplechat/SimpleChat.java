@@ -1,16 +1,14 @@
-package com.rappytv.rychat;
+package com.rappytv.simplechat;
 
-import com.rappytv.rychat.commands.Chat;
-import com.rappytv.rychat.commands.ChatClear;
-import com.rappytv.rychat.commands.Emoji;
-import com.rappytv.rychat.events.JoinListener;
-import com.rappytv.rychat.events.PlayerChatListener;
-import com.rappytv.rychat.events.luckperms.UpdateListener;
-import com.rappytv.rychat.scoreboard.SidebarScoreboard;
-import com.rappytv.rychat.scoreboard.TablistScoreboard;
-import com.rappytv.rychat.util.LuckPermsUtil;
-import com.rappytv.rylib.util.I18n;
-import com.rappytv.rylib.util.UpdateChecker;
+import com.rappytv.simplechat.commands.Chat;
+import com.rappytv.simplechat.commands.ChatClear;
+import com.rappytv.simplechat.commands.Emoji;
+import com.rappytv.simplechat.events.JoinListener;
+import com.rappytv.simplechat.events.PlayerChatListener;
+import com.rappytv.simplechat.events.luckperms.UpdateListener;
+import com.rappytv.simplechat.scoreboard.SidebarScoreboard;
+import com.rappytv.simplechat.scoreboard.TablistScoreboard;
+import com.rappytv.simplechat.util.LuckPermsUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
@@ -21,30 +19,22 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class RyChat extends JavaPlugin {
+public final class SimpleChat extends JavaPlugin {
 
     public LuckPerms lp;
-    private I18n i18n;
     private LuckPermsUtil luckPermsUtil;
+    private static boolean usingPlaceholderApi = false;
 
     @Override
     public void onEnable() {
         registerAll();
         saveDefaultConfig();
-        i18n = new I18n(this);
-        new UpdateChecker<>(
-                this,
-                () -> getConfig().getBoolean("checkForUpdates")
-        ).setArtifactFormat(
-                "ci.rappytv.com",
-                getName(),
-                "com.rappytv",
-                "Minecraft Plugins"
-        );
 
         Plugin placeholderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
-        if(placeholderAPI == null || placeholderAPI.isEnabled())
-            getLogger().info("Not using PlaceholderAPI.");
+        if(placeholderAPI != null && placeholderAPI.isEnabled()) {
+            getLogger().info("Using PlaceHolderAPI");
+            usingPlaceholderApi = true;
+        }
 
         SidebarScoreboard.init(this);
         TablistScoreboard.init(this);
@@ -72,15 +62,8 @@ public final class RyChat extends JavaPlugin {
     }
 
     public static String setPlaceholders(OfflinePlayer player, String text) {
-        try {
-            return PlaceholderAPI.setPlaceholders(player, text);
-        } catch (Throwable e) {
-            return text;
-        }
-    }
-
-    public I18n i18n() {
-        return i18n;
+        if(!usingPlaceholderApi) return text;
+        return PlaceholderAPI.setPlaceholders(player, text);
     }
 
     public LuckPermsUtil getLuckPermsUtil() {

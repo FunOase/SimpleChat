@@ -1,6 +1,6 @@
-package com.rappytv.rychat.scoreboard;
+package com.rappytv.simplechat.scoreboard;
 
-import com.rappytv.rychat.RyChat;
+import com.rappytv.simplechat.SimpleChat;
 import com.rappytv.rylib.util.Colors;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -9,7 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class TablistScoreboard {
 
     private final Player player;
-    private static RyChat plugin;
+    private static SimpleChat plugin;
     private BukkitRunnable runnable;
 
     public TablistScoreboard(Player player) {
@@ -20,7 +20,7 @@ public class TablistScoreboard {
         if(updateInterval != -1) run(updateInterval);
     }
 
-    public static void init(RyChat plugin) {
+    public static void init(SimpleChat plugin) {
         TablistScoreboard.plugin = plugin;
         for(Player player : Bukkit.getOnlinePlayers()) {
             new TablistScoreboard(player);
@@ -28,8 +28,8 @@ public class TablistScoreboard {
     }
 
     public void update() {
-        String header = Colors.translateCodes(RyChat.setPlaceholders(player, plugin.i18n().translate("tab.header")));
-        String footer = Colors.translateCodes(RyChat.setPlaceholders(player, plugin.i18n().translate("tab.footer")));
+        String header = Colors.translateCodes(SimpleChat.setPlaceholders(player, plugin.i18n().translate("tab.header")));
+        String footer = Colors.translateCodes(SimpleChat.setPlaceholders(player, plugin.i18n().translate("tab.footer")));
 
         player.setPlayerListHeader(header);
         player.setPlayerListFooter(footer);

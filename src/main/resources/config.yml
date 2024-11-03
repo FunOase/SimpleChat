@@ -1,9 +1,7 @@
-checkForUpdates: true
-
 chats:
   team:
     name: '&c&l@TEAM'
-    permission: rychat.chat.team
+    permission: simplechat.chat.team
     triggers: # Don't use spaces
       - '@team'
       - '@t'

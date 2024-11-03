@@ -1,6 +1,6 @@
-package com.rappytv.rychat.util;
+package com.rappytv.simplechat.util;
 
-import com.rappytv.rychat.RyChat;
+import com.rappytv.simplechat.SimpleChat;
 import com.rappytv.rylib.util.Colors;
 import com.rappytv.rylib.util.I18n;
 import com.rappytv.rylib.util.Permissions;
@@ -18,9 +18,9 @@ import java.util.Iterator;
 @SuppressWarnings("ConstantConditions")
 public class LuckPermsUtil {
 
-    private final RyChat plugin;
+    private final SimpleChat plugin;
 
-    public LuckPermsUtil(RyChat plugin) {
+    public LuckPermsUtil(SimpleChat plugin) {
         this.plugin = plugin;
     }
 
@@ -74,7 +74,7 @@ public class LuckPermsUtil {
     }
 
     private String getTabPrefix(Player player) {
-        String prefix = Colors.translateCodes(RyChat.setPlaceholders(
+        String prefix = Colors.translateCodes(SimpleChat.setPlaceholders(
                 player,
                 plugin.i18n().translate(
                         "tab.prefix",
@@ -85,7 +85,7 @@ public class LuckPermsUtil {
     }
 
     private String getTabSuffix(Player player) {
-        String suffix = Colors.translateCodes(RyChat.setPlaceholders(
+        String suffix = Colors.translateCodes(SimpleChat.setPlaceholders(
                 player,
                 plugin.i18n().translate(
                         "tab.suffix",
@@ -106,7 +106,7 @@ public class LuckPermsUtil {
 
         return Permissions.getEnumValue(
                 player,
-                "rychat.name",
+                "simplechat.name",
                 defaultColor,
                 ChatColor.class
         );

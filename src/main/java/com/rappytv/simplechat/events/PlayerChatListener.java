@@ -1,7 +1,7 @@
-package com.rappytv.rychat.events;
+package com.rappytv.simplechat.events;
 
-import com.rappytv.rychat.RyChat;
-import com.rappytv.rychat.commands.Chat;
+import com.rappytv.simplechat.SimpleChat;
+import com.rappytv.simplechat.commands.Chat;
 import com.rappytv.rylib.util.Colors;
 import com.rappytv.rylib.util.I18n;
 import com.rappytv.rylib.util.Permissions;
@@ -15,9 +15,9 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 @SuppressWarnings("ConstantConditions")
 public class PlayerChatListener implements Listener {
 
-    private final RyChat plugin;
+    private final SimpleChat plugin;
 
-    public PlayerChatListener(RyChat plugin) {
+    public PlayerChatListener(SimpleChat plugin) {
         this.plugin = plugin;
     }
 
@@ -26,12 +26,12 @@ public class PlayerChatListener implements Listener {
         Player player = event.getPlayer();
         String message = event.getMessage();
 
-        if(!Chat.isEnabled() && !player.hasPermission("rychat.manage.bypass")) {
+        if(!Chat.isEnabled() && !player.hasPermission("simplechat.manage.bypass")) {
             player.sendMessage(plugin.i18n().translate("listener.chatOff"));
             event.setCancelled(true);
             return;
         }
-        if(player.hasPermission("rychat.emojis")) {
+        if(player.hasPermission("simplechat.emojis")) {
             if(!plugin.getConfig().contains("emojis")) {
                 plugin.getLogger().severe("Emoji list has to be set!");
             } else {
@@ -53,7 +53,7 @@ public class PlayerChatListener implements Listener {
             String permission = section.getString("permission");
             boolean hasPermission = Permissions.hasExactPermission(
                     player,
-                    "rychat.chat.*"
+                    "simplechat.chat.*"
             ) || Permissions.hasExactPermission(
                     player,
                     permission
@@ -66,8 +66,8 @@ public class PlayerChatListener implements Listener {
             }
             String chatMessage = message.substring(words[0].length() + 1);
             for(Player target : Bukkit.getOnlinePlayers()) {
-                if(Permissions.hasExactPermission(target, "rychat.chat.*") || Permissions.hasExactPermission(target, permission))
-                    target.sendMessage(Colors.translateCodes(RyChat.setPlaceholders(
+                if(Permissions.hasExactPermission(target, "simplechat.chat.*") || Permissions.hasExactPermission(target, permission))
+                    target.sendMessage(Colors.translateCodes(SimpleChat.setPlaceholders(
                             player,
                             plugin.i18n().translate(
                                     "chat.chats",
@@ -79,36 +79,12 @@ public class PlayerChatListener implements Listener {
             }
             return;
         }
-//        if((event.getMessage().toLowerCase().startsWith("@team") || event.getMessage().toLowerCase().startsWith("@t")) && player.hasPermission("rychat.team")) {
-//            event.setCancelled(true);
-//            String msg = event.getMessage();
-//            String[] words = msg.split(" ");
-//
-//            if(words.length < 2) {
-//                player.sendMessage(plugin.i18n().translate("listener.enterText"));
-//                return;
-//            }
-//            String teamMessage = msg.substring(words[0].length() + 1);
-//
-//            for(Player all : Bukkit.getOnlinePlayers()) {
-//                if(all.hasPermission("rychat.team"))
-//                    all.sendMessage(Colors.translateCodes(RyChat.setPlaceholders(
-//                            player,
-//                            plugin.i18n().translate(
-//                                    "chat.teamChat",
-//                                    new I18n.Argument("player", player.getName()),
-//                                    new I18n.Argument("message", teamMessage)
-//                            )
-//                    )));
-//            }
-//            return;
-//        }
 
-        boolean margin = player.hasPermission("rychat.format.margin");
+        boolean margin = player.hasPermission("simplechat.format.margin");
         String marginText = plugin.i18n().translate("chat.margin");
         String prefix = plugin.getLuckPermsUtil().getPrefix(player);
         String suffix = plugin.getLuckPermsUtil().getSuffix(player);
-        event.setFormat(Colors.translateCodes(RyChat.setPlaceholders(
+        event.setFormat(Colors.translateCodes(SimpleChat.setPlaceholders(
                 player,
                 plugin.i18n().translate(
                         "chat.message",

@@ -1,6 +1,6 @@
-package com.rappytv.rychat.commands;
+package com.rappytv.simplechat.commands;
 
-import com.rappytv.rychat.RyChat;
+import com.rappytv.simplechat.SimpleChat;
 import com.rappytv.rylib.RyLib;
 import com.rappytv.rylib.util.Command;
 import com.rappytv.rylib.util.I18n;
@@ -11,9 +11,9 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class Emoji extends Command<RyChat> {
+public class Emoji extends Command<SimpleChat> {
 
-    public Emoji(String name, RyChat plugin) {
+    public Emoji(String name, SimpleChat plugin) {
         super(name, plugin);
     }
 
@@ -24,11 +24,11 @@ public class Emoji extends Command<RyChat> {
             return;
         }
 
-        if(!player.hasPermission("rychat.emojis.toggle")) {
+        if(!player.hasPermission("simplechat.emojis.toggle")) {
             player.sendMessage(RyLib.get().i18n().translate("noPermission"));
             return;
         }
-        boolean active = !player.hasPermission("rychat.emojis");
+        boolean active = !player.hasPermission("simplechat.emojis");
         User user = plugin.lp.getPlayerAdapter(Player.class).getUser(player);
         user.data().add(Node.builder("chat.emojis").value(active).build());
         plugin.lp.getUserManager().saveUser(user);
