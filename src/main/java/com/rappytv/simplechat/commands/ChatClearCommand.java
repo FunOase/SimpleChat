@@ -1,9 +1,7 @@
 package com.rappytv.simplechat.commands;
 
 import com.rappytv.simplechat.SimpleChat;
-import com.rappytv.rylib.RyLib;
-import com.rappytv.rylib.util.Command;
-import com.rappytv.rylib.util.I18n;
+import net.funoase.sahara.bukkit.util.Command;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

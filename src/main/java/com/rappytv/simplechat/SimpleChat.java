@@ -56,9 +56,9 @@ public final class SimpleChat extends JavaPlugin {
         pm.registerEvents(new JoinListener(this), this);
         pm.registerEvents(new PlayerChatListener(this), this);
 
-        new ChatCommand("chat", this);
-        new ChatClearCommand("chatclear", this);
-        new EmojiCommand("emoji", this);
+        new ChatCommand("chat", this).register();
+        new ChatClearCommand("chatclear", this).register();
+        new EmojiCommand("emoji", this).register();
     }
 
     public static String setPlaceholders(OfflinePlayer player, String text) {
