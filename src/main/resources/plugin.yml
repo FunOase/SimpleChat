@@ -1,7 +1,7 @@
 name: SimpleChat
 version: '${project.version}'
 main: com.rappytv.simplechat.SimpleChat
-api-version: 1.21
+api-version: '1.21'
 authors: [ RappyTV ]
 depend:
   - Sahara
@@ -14,7 +14,7 @@ commands:
     permission: simplechat.manage
   chatclear:
     aliases: [ cc ]
-    permission: simplechat.clear
+    permission: simplechat.chat.manage.clear
   emoji:
     aliases: [ emojis ]
     permission: simplechat.emojis.toggle
@@ -23,22 +23,50 @@ permissions:
   simplechat.manage.*:
     default: op
     children:
-      simplechat.manage:
-        default: op
-      simplechat.manage.enable:
-        default: op
-      simplechat.manage.disable:
-        default: op
-      simplechat.manage.bypass:
-        default: op
-      simplechat.reload:
-        default: op
+      - simplechat.manage
+      - simplechat.chat.manage.clear
+      - simplechat.chat.manage.clear.bypass
+      - simplechat.chat.manage.toggle
+      - simplechat.chat.manage.toggle.bypass
+      - simplechat.reload
 
-  simplechat.chat.*:
+  simplechat.channel.*:
     default: op
-  simplechat.clear:
+
+  simplechat.chat.emojis:
     default: op
-  simplechat.clear.bypass:
+  simplechat.chat.emojis.toggle:
+    default: op
+
+  simplechat.chat.format.colors:
+    default: op
+  simplechat.chat.format.colors.hex:
+    default: op
+  simplechat.chat.format.bold:
+    default: op
+  simplechat.chat.format.italic:
+    default: op
+  simplechat.chat.format.underline:
+    default: op
+  simplechat.chat.format.strikethrough:
+    default: op
+  simplechat.chat.format.magic:
+    default: op
+  simplechat.chat.format.margin:
+    default: op
+
+  simplechat.chat.use:
+    default: op
+
+  simplechat.manage:
+    default: op
+  simplechat.chat.manage.clear:
+    default: op
+  simplechat.chat.manage.clear.bypass:
+    default: op
+  simplechat.chat.manage.toggle:
+    default: op
+  simplechat.chat.manage.toggle.bypass:
     default: op
 
   simplechat.name.black:
@@ -73,25 +101,5 @@ permissions:
     default: false
   simplechat.name.white:
     default: false
-
-  simplechat.format.colors:
-    default: op
-  simplechat.format.colors.hex:
-    default: op
-  simplechat.format.bold:
-    default: op
-  simplechat.format.italic:
-    default: op
-  simplechat.format.underline:
-    default: op
-  simplechat.format.strikethrough:
-    default: op
-  simplechat.format.magic:
-    default: op
-  simplechat.format.margin:
-    default: op
-
-  simplechat.emojis:
-    default: op
-  simplechat.emojis.toggle:
+  simplechat.reload:
     default: op
