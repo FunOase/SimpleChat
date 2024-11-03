@@ -20,56 +20,51 @@ public class ChatCommand extends Command<SimpleChat> {
 
     @Override
     public void execute(CommandSender sender, String prefix, String[] args) {
-        if(sender instanceof Player player) {
-            if (!player.hasPermission("simplechat.manage")) {
-                player.sendMessage(RyLib.get().i18n().translate("noPermission"));
-                return;
-            }
-        }
-        if(args.length < 1) {
-            sender.sendMessage(plugin.i18n().translate("command.chat.invalidSubcommand"));
+        if (!sender.hasPermission("simplechat.manage")) {
+            sender.sendMessage(deserializeTranslatable(sender, "sahara.errors.missing_permissions"));
             return;
         }
-        if(args[0].equalsIgnoreCase("on")) {
-            if(!sender.hasPermission("simplechat.manage.enable")) {
-                sender.sendMessage(RyLib.get().i18n().translate("noPermission"));
-                return;
-            }
-            if(enabled) {
-                sender.sendMessage(plugin.i18n().translate("command.chat.alreadyOn"));
-                return;
-            }
+        switch (args.length > 0 ? args[0].toLowerCase() : "") {
+            case "enable" -> {
+                if(!sender.hasPermission("simplechat.chat.manage.toggle")) {
+                    sender.sendMessage(deserializeTranslatable(sender, "sahara.errors.missing_permissions"));
+                    return;
+                }
+                if(enabled) {
+                    sender.sendMessage(deserializeTranslatable(sender, "simplechat.commands.chat.enable.already"));
+                    return;
+                }
 
-            enabled = true;
-            sender.sendMessage(plugin.i18n().translate("command.chat.successOn"));
-            for(Player all : Bukkit.getOnlinePlayers()) {
-                all.sendMessage(plugin.i18n().translate("command.chat.announceOn"));
+                enabled = true;
+                for(Player all : Bukkit.getOnlinePlayers()) {
+                    all.sendMessage(deserializeTranslatable(sender, "simplechat.commands.chat.enable.broadcast"));
+                }
             }
-        } else if(args[0].equalsIgnoreCase("off")) {
-            if(!sender.hasPermission("simplechat.manage.disable")) {
-                sender.sendMessage(RyLib.get().i18n().translate("noPermission"));
-                return;
-            }
-            if(!enabled) {
-                sender.sendMessage(plugin.i18n().translate("command.chat.alreadyOff"));
-                return;
-            }
+            case "disable" -> {
+                if(!sender.hasPermission("simplechat.chat.manage.toggle")) {
+                    sender.sendMessage(deserializeTranslatable(sender, "sahara.errors.missing_permissions"));
+                    return;
+                }
+                if(!enabled) {
+                    sender.sendMessage(deserializeTranslatable(sender, "simplechat.commands.chat.disable.already"));
+                    return;
+                }
 
-            enabled = false;
-            sender.sendMessage(plugin.i18n().translate("command.chat.successOff"));
-            for(Player all : Bukkit.getOnlinePlayers()) {
-                all.sendMessage(plugin.i18n().translate("command.chat.announceOff"));
+                enabled = false;
+                for(Player all : Bukkit.getOnlinePlayers()) {
+                    all.sendMessage(deserializeTranslatable(sender, "simplechat.commands.chat.disable.already"));
+                }
             }
-        } else if(args[0].equalsIgnoreCase("reload")) {
-            if(!sender.hasPermission("simplechat.reload")) {
-                sender.sendMessage(RyLib.get().i18n().translate("noPermission"));
-                return;
-            }
+            case "reload" -> {
+                if(!sender.hasPermission("simplechat.reload")) {
+                    sender.sendMessage(deserializeTranslatable(sender, "sahara.errors.missing_permissions"));
+                    return;
+                }
 
-            plugin.reloadConfig();
-            sender.sendMessage(plugin.i18n().translate("command.chat.reloaded"));
-        } else {
-            sender.sendMessage(plugin.i18n().translate("command.chat.invalidSubcommand"));
+                plugin.reloadConfig();
+                sender.sendMessage(deserializeTranslatable(sender, "simplechat.commands.chat.reload.success"));
+            }
+            default -> sender.sendMessage(deserializeTranslatable(sender, "simplechat.commands.chat.invalid_subcommand"));
         }
     }
 
@@ -77,7 +72,7 @@ public class ChatCommand extends Command<SimpleChat> {
     public List<String> complete(CommandSender sender, String prefix, String[] args) {
         if(args.length == 1) {
             List<String> list = new ArrayList<>();
-            if(sender.hasPermission("simplechat.manage")) list.addAll(Arrays.asList("on", "off"));
+            if(sender.hasPermission("simplechat.chat.manage.toggle")) list.addAll(Arrays.asList("enable", "disable"));
             if(sender.hasPermission("simplechat.reload")) list.add("reload");
             return tab(args[0], list);
         }

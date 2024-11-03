@@ -1,7 +1,9 @@
 package com.rappytv.simplechat.commands;
 
 import com.rappytv.simplechat.SimpleChat;
+import net.funoase.sahara.bukkit.i18n.I18n;
 import net.funoase.sahara.bukkit.util.Command;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import org.bukkit.command.CommandSender;
@@ -18,27 +20,23 @@ public class EmojiCommand extends Command<SimpleChat> {
     @Override
     public void execute(CommandSender sender, String prefix, String[] args) {
         if(!(sender instanceof Player player)) {
-            sender.sendMessage(RyLib.get().i18n().translate("onlyPlayer"));
+            sender.sendMessage(deserializeTranslatable(sender, "sahara.errors.client_only"));
             return;
         }
-
         if(!player.hasPermission("simplechat.emojis.toggle")) {
-            player.sendMessage(RyLib.get().i18n().translate("noPermission"));
+            player.sendMessage(deserializeTranslatable(sender, "sahara.errors.missing_permissions"));
             return;
         }
         boolean active = !player.hasPermission("simplechat.emojis");
         User user = plugin.lp.getPlayerAdapter(Player.class).getUser(player);
-        user.data().add(Node.builder("chat.emojis").value(active).build());
+        user.data().add(Node.builder("simplechat.emojis").value(active).build());
         plugin.lp.getUserManager().saveUser(user);
 
-        String text = active
-                ? plugin.i18n().translate("command.emoji.activated")
-                : plugin.i18n().translate("command.emoji.deactivated");
-        player.sendMessage(
-                plugin.i18n().translate(
-                        "command.emoji.success",
-                        new I18n.Argument("state", text)
-                )
+        String state = I18n.translate(player, "simplechat.commands.emoji." + (active ? "enabled" : "disabled"));
+        deserializeTranslatable(
+                sender,
+                "simplechat.commands.emoji.success",
+                Placeholder.unparsed("state", state)
         );
     }
 

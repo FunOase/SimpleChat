@@ -1,7 +1,10 @@
 package com.rappytv.simplechat.commands;
 
 import com.rappytv.simplechat.SimpleChat;
+import net.funoase.sahara.bukkit.i18n.I18n;
 import net.funoase.sahara.bukkit.util.Command;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -16,23 +19,27 @@ public class ChatClearCommand extends Command<SimpleChat> {
 
     @Override
     public void execute(CommandSender sender, String prefix, String[] args) {
-        if(!sender.hasPermission("simplechat.clear")) {
-            sender.sendMessage(RyLib.get().i18n().translate("noPermission"));
+        if(!sender.hasPermission("simplechat.chat.clear")) {
+            sender.sendMessage(deserializeTranslatable(sender, "sahara.errors.missing_permissions"));
             return;
         }
 
-        String staff = sender instanceof Player
-                ? sender.getName()
-                : plugin.i18n().translate("command.chatclear.console");
+        Component lines = Component.empty();
+        for(int i = 0; i < 1000; i++) {
+            lines = lines.append(Component.newline());
+        }
+
         for(Player player : Bukkit.getOnlinePlayers()) {
-            if(!player.hasPermission("simplechat.clear.bypass"))
-                player.sendMessage("§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n§e\n");
-            player.sendMessage(
-                    plugin.i18n().translate(
-                            "command.chatclear.success",
-                            new I18n.Argument("staff", staff)
-                    )
-            );
+            if(!player.hasPermission("simplechat.chat.clear.bypass"))
+                player.sendMessage(lines);
+            String staff = sender instanceof Player
+                    ? sender.getName()
+                    : I18n.translate(player, "simplechat.commands.clear.console");
+            player.sendMessage(deserializeTranslatable(
+                    sender,
+                    "simplechat.commands.clear.broadcast",
+                    Placeholder.unparsed("player", staff)
+            ));
         }
     }
 
