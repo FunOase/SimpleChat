@@ -1,24 +1,26 @@
 channels:
   team:
     name: '<red><bold>@TEAM</bold></red>'
+    # Note: The player needs to have the permission or simplechat.channel.* EXPLICITLY set!
     permission: simplechat.channel.team
-    triggers: # Don't use spaces
+    # Don't use spaces
+    triggers:
       - '@team'
       - '@t'
 
 chat:
   margin: "<dark_gray>»</dark_gray>"
-  prefix_format: '<player_prefix> <dark_gray>|</dark_gray> '
-  suffix_format: ' <dark_gray>[</dark_gray><player_suffix><dark_gray>]</dark_gray>'
-  message_format: "<margin1><prefix_format><gray><player></gray><suffix_format> <dark_gray>»<dark_gray> <gray><message></gray><margin2>"
+  prefix_format: '<player_prefix><reset> <dark_gray>|</dark_gray> '
+  suffix_format: ' <dark_gray>[</dark_gray><player_suffix><reset><dark_gray>]</dark_gray>'
+  message_format: "<margin1><prefix_format><gray><player></gray><suffix_format> <dark_gray>»</dark_gray> <gray><message></gray><margin2>"
   channel_format: |- # You can use <name> (The chat's name), <player>, <message> and PlaceHolderAPI placeholders
     <dark_gray>»</dark_gray>
     <name> <dark_gray>|</dark_gray> <aqua><player></aqua> <dark_gray>»</dark_gray> <white><message>
     <dark_gray>&8»</dark_gray>
 tab:
   default_color: gray
-  prefix: "<player_prefix> <dark_gray>|</dark_gray> "
-  suffix: " <dark_gray>[</dark_gray><player_suffix><dark_gray>]</dark_gray>"
+  prefix: "<player_prefix><reset> <dark_gray>|</dark_gray> "
+  suffix: " <dark_gray>[</dark_gray><player_suffix><reset><dark_gray>]</dark_gray>"
 
   # To enable tab header and footer. Doesn't affect default_color, prefix or suffix.
   enabled: false
