@@ -97,7 +97,7 @@ public class LuckPermsUtil {
         ) : Component.empty();
     }
 
-    private NamedTextColor getNameColor(Player player) {
+    public NamedTextColor getNameColor(Player player) {
         NamedTextColor defaultColor = NamedTextColor.NAMES.valueOr(
                 plugin.getConfig().getString("tab.default_color").toLowerCase(),
                 NamedTextColor.WHITE
