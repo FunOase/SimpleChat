@@ -28,6 +28,11 @@ public class PlayerChatListener implements Listener {
         Player player = event.getPlayer();
         String message = ((TextComponent) event.originalMessage()).content();
 
+        if(!player.hasPermission("simplechat.chat.use")) {
+            player.sendMessage(ChatCommand.deserializeTranslatable(player, "simplechat.listener.missing_permissions"));
+            event.setCancelled(true);
+            return;
+        }
         if(!ChatCommand.isEnabled() && !player.hasPermission("simplechat.chat.manage.toggle.bypass")) {
             player.sendMessage(ChatCommand.deserializeTranslatable(player, "simplechat.listener.chat_disabled"));
             event.setCancelled(true);
