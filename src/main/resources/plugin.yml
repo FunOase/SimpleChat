@@ -70,36 +70,3 @@ permissions:
     default: op
   simplechat.manage.reload:
     default: op
-
-  simplechat.name.black:
-    default: false
-  simplechat.name.dark_blue:
-    default: false
-  simplechat.name.dark_green:
-    default: false
-  simplechat.name.dark_aqua:
-    default: false
-  simplechat.name.dark_red:
-    default: false
-  simplechat.name.dark_purple:
-    default: false
-  simplechat.name.gold:
-    default: false
-  simplechat.name.gray:
-    default: false
-  simplechat.name.dark_gray:
-    default: false
-  simplechat.name.blue:
-    default: false
-  simplechat.name.green:
-    default: false
-  simplechat.name.aqua:
-    default: false
-  simplechat.name.red:
-    default: false
-  simplechat.name.light_purple:
-    default: false
-  simplechat.name.yellow:
-    default: false
-  simplechat.name.white:
-    default: false
