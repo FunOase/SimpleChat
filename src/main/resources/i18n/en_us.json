@@ -1,0 +1,34 @@
+{
+    "simplechat": {
+        "commands": {
+            "clear": {
+                "console": "Console",
+                "broadcast": "<gray>The chat was cleared by <aqua><player></aqua>."
+            },
+            "chat": {
+                "invalid_subcommand": "<red>Invalid subcommand!",
+                "reload": {
+                    "success": "<green>The config was successfully reloaded!"
+                },
+                "enable": {
+                    "already": "<gray>The chat is already <aqua>enabled</aqua>!",
+                    "broadcast": "<gray>The chat has been <aqua>enabled</aqua>!"
+                },
+                "disable": {
+                    "already": "<gray>The chat is already <aqua>disabled</aqua>!",
+                    "broadcast": "<gray>The chat has been <aqua>disabled</aqua>!"
+                }
+            },
+            "emoji": {
+                "enabled": "enabled",
+                "disabled": "disabled",
+                "success": "<gray>Emojis have been <aqua><state></aqua>!"
+            }
+        },
+        "listener": {
+            "missing_permissions": "<red>You are not allowed to use the chat here!",
+            "chat_disabled": "<red>The chat is <aqua>disabled</aqua>!",
+            "enter_text": "<red>Please enter the text you want to send to the channel!"
+        }
+    }
+}
