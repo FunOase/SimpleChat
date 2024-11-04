@@ -3,13 +3,14 @@ package com.rappytv.simplechat;
 import com.rappytv.simplechat.commands.ChatCommand;
 import com.rappytv.simplechat.commands.ChatClearCommand;
 import com.rappytv.simplechat.commands.EmojiCommand;
-import com.rappytv.simplechat.events.JoinListener;
-import com.rappytv.simplechat.events.PlayerChatListener;
-import com.rappytv.simplechat.events.luckperms.UpdateListener;
+import com.rappytv.simplechat.listeners.JoinListener;
+import com.rappytv.simplechat.listeners.PlayerChatListener;
+import com.rappytv.simplechat.listeners.luckperms.UpdateListener;
 import com.rappytv.simplechat.scoreboard.SidebarScoreboard;
 import com.rappytv.simplechat.scoreboard.TablistScoreboard;
 import com.rappytv.simplechat.util.LuckPermsUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.funoase.sahara.bukkit.Sahara;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -29,6 +30,7 @@ public final class SimpleChat extends JavaPlugin {
     public void onEnable() {
         registerAll();
         saveDefaultConfig();
+        Sahara.get().getI18nManager().saveTranslations(this);
 
         Plugin placeholderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
         if(placeholderAPI != null && placeholderAPI.isEnabled()) {

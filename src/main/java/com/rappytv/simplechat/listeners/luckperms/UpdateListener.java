@@ -1,4 +1,4 @@
-package com.rappytv.simplechat.events.luckperms;
+package com.rappytv.simplechat.listeners.luckperms;
 
 import com.rappytv.simplechat.SimpleChat;
 import net.luckperms.api.event.EventBus;

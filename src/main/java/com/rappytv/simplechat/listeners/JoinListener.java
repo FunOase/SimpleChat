@@ -1,4 +1,4 @@
-package com.rappytv.simplechat.events;
+package com.rappytv.simplechat.listeners;
 
 import com.rappytv.simplechat.SimpleChat;
 import com.rappytv.simplechat.scoreboard.SidebarScoreboard;
