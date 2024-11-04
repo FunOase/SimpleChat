@@ -18,7 +18,7 @@ chat:
   channel_format: |- # You can use <name> (The chat's name), <player>, <message> and PlaceHolderAPI placeholders
     <dark_gray>»</dark_gray>
     <name> <dark_gray>|</dark_gray> <aqua><player></aqua> <dark_gray>»</dark_gray> <white><message>
-    <dark_gray>&8»</dark_gray>
+    <dark_gray>»</dark_gray>
 tab:
   default_color: gray
   prefix: "<player_prefix><reset> <dark_gray>|</dark_gray> "
