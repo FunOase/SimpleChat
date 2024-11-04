@@ -3,6 +3,7 @@ package com.rappytv.simplechat;
 import com.rappytv.simplechat.commands.ChatCommand;
 import com.rappytv.simplechat.commands.ChatClearCommand;
 import com.rappytv.simplechat.commands.EmojiCommand;
+import com.rappytv.simplechat.expansion.SimpleChatExpansion;
 import com.rappytv.simplechat.listeners.JoinListener;
 import com.rappytv.simplechat.listeners.PlayerChatListener;
 import com.rappytv.simplechat.listeners.LuckPermsListener;
@@ -35,8 +36,9 @@ public final class SimpleChat extends JavaPlugin {
 
         Plugin placeholderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
         if(placeholderAPI != null && placeholderAPI.isEnabled()) {
-            getLogger().info("Using PlaceHolderAPI");
             usingPlaceholderApi = true;
+            new SimpleChatExpansion(this).register();
+            getLogger().info("Using PlaceHolderAPI");
         }
 
         SidebarScoreboard.init(this);
