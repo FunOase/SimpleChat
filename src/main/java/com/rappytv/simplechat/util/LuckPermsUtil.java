@@ -1,21 +1,21 @@
 package com.rappytv.simplechat.util;
 
 import com.rappytv.simplechat.SimpleChat;
-import net.funoase.sahara.bukkit.util.Permissions;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.luckperms.api.cacheddata.CachedMetaData;
+import net.luckperms.api.model.PermissionHolder;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
-import java.util.List;
 
 @SuppressWarnings("ConstantConditions")
 public class LuckPermsUtil {
@@ -36,6 +36,11 @@ public class LuckPermsUtil {
         Group primaryGroup = plugin.lp.getGroupManager().getGroup(user.getPrimaryGroup());
 
         return primaryGroup != null ? primaryGroup : plugin.lp.getGroupManager().getGroup("default");
+    }
+
+    @Nullable
+    public String getSavedColor(PermissionHolder holder) {
+        return holder.getCachedData().getMetaData().getMetaValue("name_color");
     }
 
     public String getPrefix(Player player) {
@@ -98,13 +103,16 @@ public class LuckPermsUtil {
                 NamedTextColor.WHITE
         );
 
-        // TODO: Actually use this
-        List<String> colors = Permissions.getValues(
-                player,
-                "simplechat.name"
-        );
+        boolean preferUserMetaData = plugin.getConfig().getBoolean("prefer_user_metadata");
+        String playerColor = getSavedColor(getUser(player));
+        String groupColor = getSavedColor(getPrimaryGroup(player));
 
-        return defaultColor;
+        return NamedTextColor.NAMES.valueOr(
+                preferUserMetaData
+                    ? playerColor != null ? playerColor : groupColor
+                    : groupColor != null ? groupColor : playerColor,
+                defaultColor
+        );
     }
 
     public void setTabPrefix(Player player) {
@@ -155,6 +163,7 @@ public class LuckPermsUtil {
 
                 team.prefix(prefix);
                 team.suffix(suffix);
+                System.out.println(getNameColor(player));
                 team.color(getNameColor(player));
                 team.addEntry(player.getName());
             }
