@@ -88,13 +88,13 @@ public class LuckPermsUtil {
         String format = plugin.getConfig().getString("tab.suffix");
         return !format.isBlank() ? minimessage.deserialize(
                 format,
-                Placeholder.parsed("player_suffix", getPrefix(player))
+                Placeholder.parsed("player_suffix", getSuffix(player))
         ) : Component.empty();
     }
 
     private NamedTextColor getNameColor(Player player) {
         NamedTextColor defaultColor = NamedTextColor.NAMES.valueOr(
-                plugin.getConfig().getString("tab.defaultColor").toLowerCase(),
+                plugin.getConfig().getString("tab.default_color").toLowerCase(),
                 NamedTextColor.WHITE
         );
 
