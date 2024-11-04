@@ -1,70 +1,50 @@
-chats:
+channels:
   team:
-    name: '&c&l@TEAM'
-    permission: simplechat.chat.team
+    name: '<red><bold>@TEAM</bold></red>'
+    permission: simplechat.channel.team
     triggers: # Don't use spaces
       - '@team'
       - '@t'
 
-i18n:
-  chat:
-    margin: "&8»"
-    prefixFormat: '<playerPrefix> &8| '
-    suffixFormat: ' &8[<playerSuffix>&8]'
-    # The first %s is the playername and the second %s is the message. They can't be switched
-    message: "<margin1><prefixFormat>&7%s<suffixFormat> &8» &7%s<margin2>"
-    chats: |- # You can use <name> (The chat's name), <player>, <message> and PlaceHolderAPI placeholders
-      &8»
-      <name> &8| &b<player> &8» &f<message>
-      &8»
-  tab:
-    prefix: "<playerPrefix> &8| "
-    defaultColor: "GRAY"
-    suffix: " &8[<playerSuffix>&8]"
+chat:
+  margin: "<dark_gray>»</dark_gray>"
+  prefix_format: '<player_prefix> <dark_gray>|</dark_gray> '
+  suffix_format: ' <dark_gray>[</dark_gray><player_suffix><dark_gray>]</dark_gray>'
+  message_format: "<margin1><prefix_format><gray><player></gray><suffix_format> <dark_gray>»<dark_gray> <gray><message></gray><margin2>"
+  channel_format: |- # You can use <name> (The chat's name), <player>, <message> and PlaceHolderAPI placeholders
+    <dark_gray>»</dark_gray>
+    <name> <dark_gray>|</dark_gray> <aqua><player></aqua> <dark_gray>»</dark_gray> <white><message>
+    <dark_gray>&8»</dark_gray>
+tab:
+  default_color: "GRAY"
+  prefix: "<player_prefix> <dark_gray>|</dark_gray> "
+  suffix: " <dark_gray>[</dark_gray><player_suffix><dark_gray>]</dark_gray>"
 
-    # To enable tab header and footer. Doesn't affect prefix, defaultColor or suffix.
-    enabled: false
-    # -1 to disable updating. Please only use this if you use placeholders which can change over time
-    updateInterval: -1
-    header: |-
-      ---> Servername <---
-    footer: |-
-      Tablist Footer
-  scoreboard:
-    enabled: false
-    # -1 to disable updating. Please only use this if you use placeholders which can change over time
-    updateInterval: -1
-    title: '  SERVERNAME  '
-    scores:
-      - ''
-      - 'Score 1'
-      - 'Score 2'
-      - ''
+  # To enable tab header and footer. Doesn't affect default_color, prefix or suffix.
+  enabled: false
+  # -1 to disable updating. Please only use this if you use placeholders which can change over time
+  updateInterval: -1
+  header: |-
+    ---> Servername <---
+  footer: |-
+    Tablist Footer
+scoreboard:
+  enabled: false
+  # -1 to disable updating. Please only use this if you use placeholders which can change over time
+  updateInterval: -1
+  title: '  SERVERNAME  '
+  scores:
+    - ''
+    - 'Score 1'
+    - 'Score 2'
+    - ''
 
-  listener:
-    chatOff: '<prefix> Der Chat ist §bdeaktiviert!'
-    enterText: '<prefix> §cBitte gib einen Text an!'
+listener:
+  chatOff: '<prefix> Der Chat ist §bdeaktiviert!'
+  enterText: '<prefix> §cBitte gib einen Text an!'
 
-  command:
-    chat:
-      invalidSubcommand: '<prefix> &cBitte gib einen gültigen Subcommand an!'
-      alreadyOn: '<prefix> §cDer Chat ist bereits aktiviert!'
-      alreadyOff: '<prefix> §cDer Chat ist bereits deaktiviert!'
-      successOn: '<prefix> Der Chat wurde erfolgreich §baktiviert§7!'
-      successOff: '<prefix> Der Chat wurde erfolgreich §bdeaktiviert§7!'
-      announceOn: '<prefix> Der Chat wurde §baktiviert§7!'
-      announceOff: '<prefix> Der Chat wurde §bdeaktiviert§7!'
-      reloaded: '<prefix> Die Config wurde reloaded!'
-    chatclear:
-      console: Konsole
-      success: '<prefix> Der Chat wurde gerade von §b<staff> §7gecleart!'
-    emoji:
-      activated: '&aaktiviert'
-      deactivated: '&cdeaktiviert'
-      success: '<prefix> Emojis sind nun <state>§7!'
-
-preferUserMetaData: true
-maxWeight: 100
+prefer_user_metadata: true
+max_weight: 100
 
 emojis:
   - <3;❤

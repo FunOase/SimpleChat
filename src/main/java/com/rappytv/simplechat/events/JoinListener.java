@@ -20,8 +20,8 @@ public class JoinListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if(plugin.getConfig().getBoolean("i18n.tab.enabled")) new TablistScoreboard(player);
-        if(plugin.getConfig().getBoolean("i18n.scoreboard.enabled")) new SidebarScoreboard(player);
+        if(plugin.getConfig().getBoolean("tab.enabled")) new TablistScoreboard(player);
+        if(plugin.getConfig().getBoolean("scoreboard.enabled")) new SidebarScoreboard(player);
         plugin.getLuckPermsUtil().setTabPrefix(player);
     }
 }

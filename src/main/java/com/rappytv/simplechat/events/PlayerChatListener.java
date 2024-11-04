@@ -2,19 +2,21 @@ package com.rappytv.simplechat.events;
 
 import com.rappytv.simplechat.SimpleChat;
 import com.rappytv.simplechat.commands.ChatCommand;
-import com.rappytv.rylib.util.Colors;
-import com.rappytv.rylib.util.I18n;
-import com.rappytv.rylib.util.Permissions;
+import io.papermc.paper.event.player.AsyncChatEvent;
+import net.funoase.sahara.bukkit.util.Permissions;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 @SuppressWarnings("ConstantConditions")
 public class PlayerChatListener implements Listener {
 
+    private static final MiniMessage minimessage = MiniMessage.miniMessage();
     private final SimpleChat plugin;
 
     public PlayerChatListener(SimpleChat plugin) {
@@ -22,19 +24,17 @@ public class PlayerChatListener implements Listener {
     }
 
     @EventHandler
-    public void onChat(AsyncPlayerChatEvent event) {
+    public void onChat(AsyncChatEvent event) {
         Player player = event.getPlayer();
-        String message = event.getMessage();
+        String message = ((TextComponent) event.originalMessage()).content();
 
-        if(!ChatCommand.isEnabled() && !player.hasPermission("simplechat.manage.bypass")) {
-            player.sendMessage(plugin.i18n().translate("listener.chatOff"));
+        if(!ChatCommand.isEnabled() && !player.hasPermission("simplechat.chat.manage.toggle.bypass")) {
+            player.sendMessage(ChatCommand.deserializeTranslatable(player, "simplechat.listener.chat_disabled"));
             event.setCancelled(true);
             return;
         }
         if(player.hasPermission("simplechat.emojis")) {
-            if(!plugin.getConfig().contains("emojis")) {
-                plugin.getLogger().severe("Emoji list has to be set!");
-            } else {
+            if(plugin.getConfig().contains("emojis")) {
                 for(String emoji : plugin.getConfig().getStringList("emojis")) {
                     try {
                         String[] emojis = emoji.split(";");
@@ -42,18 +42,19 @@ public class PlayerChatListener implements Listener {
                     } catch (IndexOutOfBoundsException ignored) {
                     }
                 }
-                event.setMessage(message);
             }
         }
-        event.setMessage(Colors.translatePlayerCodes(player, event.getMessage(), "chat.format"));
+        // Translate color codes
+//        event.setMessage(Colors.translatePlayerCodes(player, event.getMessage(), "chat.format"));
 
         String[] words = message.split(" ");
-        for(String sectionName : plugin.getConfig().getConfigurationSection("chats").getKeys(false)) {
-            ConfigurationSection section = plugin.getConfig().getConfigurationSection("chats." + sectionName);
+        ConfigurationSection section = plugin.getConfig().getConfigurationSection("channels");
+        for(String sectionName : section.getKeys(false)) {
+            section = section.getConfigurationSection(sectionName);
             String permission = section.getString("permission");
             boolean hasPermission = Permissions.hasExactPermission(
                     player,
-                    "simplechat.chat.*"
+                    "simplechat.channels.*"
             ) || Permissions.hasExactPermission(
                     player,
                     permission
@@ -61,46 +62,54 @@ public class PlayerChatListener implements Listener {
             if(!hasPermission || !section.getStringList("triggers").contains(words[0])) continue;
             event.setCancelled(true);
             if(words.length < 2) {
-                player.sendMessage(plugin.i18n().translate("listener.enterText"));
+                player.sendMessage(ChatCommand.deserializeTranslatable(player, "simplechat.listener.enter_text"));
                 return;
             }
-            String chatMessage = message.substring(words[0].length() + 1);
+            message = message.substring(words[0].length() + 1);
             for(Player target : Bukkit.getOnlinePlayers()) {
                 if(Permissions.hasExactPermission(target, "simplechat.chat.*") || Permissions.hasExactPermission(target, permission))
-                    target.sendMessage(Colors.translateCodes(SimpleChat.setPlaceholders(
-                            player,
-                            plugin.i18n().translate(
-                                    "chat.chats",
-                                    new I18n.Argument("name", section.getString("name")),
-                                    new I18n.Argument("player", player.getName()),
-                                    new I18n.Argument("message", chatMessage)
-                            )
-                    )));
+                    target.sendMessage(minimessage.deserialize(
+                            SimpleChat.setPlaceholders(
+                                    player,
+                                    plugin.getConfig().getString("chat.channel_format")
+                            ),
+                            Placeholder.unparsed("name", section.getString("name")),
+                            Placeholder.unparsed("player", player.getName()),
+                            Placeholder.unparsed("message", message)
+                    ));
             }
             return;
         }
 
-        boolean margin = player.hasPermission("simplechat.format.margin");
-        String marginText = plugin.i18n().translate("chat.margin");
+        boolean margin = player.hasPermission("simplechat.chat.format.margin");
+        String marginText = plugin.getConfig().getString("chat.margin");
         String prefix = plugin.getLuckPermsUtil().getPrefix(player);
         String suffix = plugin.getLuckPermsUtil().getSuffix(player);
-        event.setFormat(Colors.translateCodes(SimpleChat.setPlaceholders(
-                player,
-                plugin.i18n().translate(
-                        "chat.message",
-                        new I18n.Argument(
-                                "prefixFormat",
-                                !prefix.isEmpty() ? plugin.i18n().translate("chat.prefixFormat") : ""
-                        ),
-                        new I18n.Argument(
-                                "suffixFormat",
-                                !suffix.isEmpty() ? plugin.i18n().translate("chat.suffixFormat") : ""
-                        ),
-                        new I18n.Argument("playerPrefix", prefix),
-                        new I18n.Argument("playerSuffix", suffix),
-                        new I18n.Argument("margin1", margin ? marginText + "\n" : ""),
-                        new I18n.Argument("margin2", margin ? "\n" + marginText : "")
-                )
-        )));
+        event.message(minimessage.deserialize(
+                SimpleChat.setPlaceholders(
+                        player,
+                        plugin.getConfig().getString("chat.message_format")
+                ),
+                Placeholder.unparsed(
+                        "prefix_format",
+                        SimpleChat.setPlaceholders(
+                                player,
+                                !prefix.isEmpty() ? plugin.getConfig().getString("chat.prefix_format") : ""
+                        )
+                ),
+                Placeholder.parsed("player_prefix", prefix),
+                Placeholder.unparsed(
+                        "suffix_format",
+                        SimpleChat.setPlaceholders(
+                                player,
+                                !suffix.isEmpty() ? plugin.getConfig().getString("chat.suffix_format") : ""
+                        )
+                ),
+                Placeholder.parsed("player_suffix", suffix),
+                Placeholder.unparsed("player", player.getName()),
+                Placeholder.unparsed("margin1", margin ? marginText + "\n" : ""),
+                Placeholder.unparsed("margin2", margin ? "\n" + marginText : ""),
+                Placeholder.unparsed("message", message)
+        ));
     }
 }

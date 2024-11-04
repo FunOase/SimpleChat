@@ -3,7 +3,7 @@ package com.rappytv.simplechat.scoreboard;
 import com.google.common.collect.Lists;
 import com.rappytv.simplechat.SimpleChat;
 import net.funoase.sahara.bukkit.scoreboard.ScoreboardBuilder;
-import net.funoase.sahara.bukkit.util.Colors;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -15,10 +15,16 @@ public class SidebarScoreboard extends ScoreboardBuilder {
     private static SimpleChat plugin;
     private BukkitRunnable runnable;
 
-    public SidebarScoreboard(Player p) {
-        super(p, Colors.translateCodes(SimpleChat.setPlaceholders(p, plugin.i18n().translate("scoreboard.title"))));
+    public SidebarScoreboard(Player player) {
+        super(
+                player,
+                MiniMessage.miniMessage().deserialize(SimpleChat.setPlaceholders(
+                        player,
+                        plugin.getConfig().getString("scoreboard.title")
+                ))
+        );
 
-        int updateInterval = plugin.getConfig().getInt("i18n.scoreboard.updateInterval");
+        int updateInterval = plugin.getConfig().getInt("scoreboard.updateInterval");
         if(updateInterval != -1) run(updateInterval);
     }
 
@@ -31,9 +37,12 @@ public class SidebarScoreboard extends ScoreboardBuilder {
 
     @Override
     public void createScoreboard() {
-        List<String> scores = Lists.reverse(plugin.getConfig().getStringList("i18n.scoreboard.scores"));
+        List<String> scores = Lists.reverse(plugin.getConfig().getStringList("scoreboard.scores"));
         for(int i = 0; i < scores.size(); i++) {
-            setScore(Colors.translateCodes(SimpleChat.setPlaceholders(player, scores.get(i))), i);
+            setScore(MiniMessage.miniMessage().deserialize(SimpleChat.setPlaceholders(
+                    player,
+                    scores.get(i)
+            )), i);
         }
     }
 

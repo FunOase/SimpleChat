@@ -1,7 +1,7 @@
 package com.rappytv.simplechat.scoreboard;
 
 import com.rappytv.simplechat.SimpleChat;
-import com.rappytv.rylib.util.Colors;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -16,7 +16,7 @@ public class TablistScoreboard {
         this.player = player;
 
         update();
-        int updateInterval = plugin.getConfig().getInt("i18n.tab.updateInterval");
+        int updateInterval = plugin.getConfig().getInt("tab.updateInterval");
         if(updateInterval != -1) run(updateInterval);
     }
 
@@ -28,11 +28,16 @@ public class TablistScoreboard {
     }
 
     public void update() {
-        String header = Colors.translateCodes(SimpleChat.setPlaceholders(player, plugin.i18n().translate("tab.header")));
-        String footer = Colors.translateCodes(SimpleChat.setPlaceholders(player, plugin.i18n().translate("tab.footer")));
-
-        player.setPlayerListHeader(header);
-        player.setPlayerListFooter(footer);
+        player.sendPlayerListHeaderAndFooter(
+                MiniMessage.miniMessage().deserialize(SimpleChat.setPlaceholders(
+                        player,
+                        plugin.getConfig().getString("tab.header")
+                )),
+                MiniMessage.miniMessage().deserialize(SimpleChat.setPlaceholders(
+                        player,
+                        plugin.getConfig().getString("tab.footer")
+                ))
+        );
     }
 
     private void run(int updateInterval) {

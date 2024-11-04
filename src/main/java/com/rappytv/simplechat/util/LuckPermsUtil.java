@@ -1,23 +1,26 @@
 package com.rappytv.simplechat.util;
 
 import com.rappytv.simplechat.SimpleChat;
-import com.rappytv.rylib.util.Colors;
-import com.rappytv.rylib.util.I18n;
-import com.rappytv.rylib.util.Permissions;
+import net.funoase.sahara.bukkit.util.Permissions;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.util.Iterator;
+import java.util.List;
 
 @SuppressWarnings("ConstantConditions")
 public class LuckPermsUtil {
 
+    private final static MiniMessage minimessage = MiniMessage.miniMessage();
     private final SimpleChat plugin;
 
     public LuckPermsUtil(SimpleChat plugin) {
@@ -36,7 +39,7 @@ public class LuckPermsUtil {
     }
 
     public String getPrefix(Player player) {
-        boolean preferUserMetaData = plugin.getConfig().getBoolean("preferUserMetaData");
+        boolean preferUserMetaData = plugin.getConfig().getBoolean("prefer_user_metadata");
         CachedMetaData playerData = getUser(player).getCachedData().getMetaData();
         CachedMetaData groupData = getPrimaryGroup(player).getCachedData().getMetaData();
         String prefix;
@@ -55,7 +58,7 @@ public class LuckPermsUtil {
     }
 
     public String getSuffix(Player player) {
-        boolean preferUserMetaData = plugin.getConfig().getBoolean("preferUserMetaData");
+        boolean preferUserMetaData = plugin.getConfig().getBoolean("prefer_user_metadata");
         CachedMetaData playerData = getUser(player).getCachedData().getMetaData();
         CachedMetaData groupData = getPrimaryGroup(player).getCachedData().getMetaData();
         String suffix;
@@ -73,73 +76,65 @@ public class LuckPermsUtil {
         return suffix;
     }
 
-    private String getTabPrefix(Player player) {
-        String prefix = Colors.translateCodes(SimpleChat.setPlaceholders(
-                player,
-                plugin.i18n().translate(
-                        "tab.prefix",
-                        new I18n.Argument("playerPrefix", getPrefix(player))
-                )
-        ));
-        return prefix.isBlank() ? "" : prefix;
+    private Component getTabPrefix(Player player) {
+        String format = plugin.getConfig().getString("tab.prefix");
+        return !format.isBlank() ? minimessage.deserialize(
+                format,
+                Placeholder.parsed("player_prefix", getPrefix(player))
+        ) : Component.empty();
     }
 
-    private String getTabSuffix(Player player) {
-        String suffix = Colors.translateCodes(SimpleChat.setPlaceholders(
-                player,
-                plugin.i18n().translate(
-                        "tab.suffix",
-                        new I18n.Argument("playerSuffix", getSuffix(player))
-                )
-        ));
-        return suffix.isBlank() ? "" : suffix;
+    private Component getTabSuffix(Player player) {
+        String format = plugin.getConfig().getString("tab.suffix");
+        return !format.isBlank() ? minimessage.deserialize(
+                format,
+                Placeholder.parsed("player_suffix", getPrefix(player))
+        ) : Component.empty();
     }
 
-    private ChatColor getNameColor(Player player) {
-        ChatColor defaultColor;
-        try {
-            defaultColor = ChatColor.valueOf(plugin.i18n().translate("tab.defaultColor").toUpperCase());
-        } catch (IllegalArgumentException e) {
-            plugin.getLogger().severe("Invalid default tab color!");
-            defaultColor = ChatColor.WHITE;
-        }
-
-        return Permissions.getEnumValue(
-                player,
-                "simplechat.name",
-                defaultColor,
-                ChatColor.class
+    private NamedTextColor getNameColor(Player player) {
+        NamedTextColor defaultColor = NamedTextColor.NAMES.valueOr(
+                plugin.getConfig().getString("tab.defaultColor").toLowerCase(),
+                NamedTextColor.WHITE
         );
+
+        // TODO: Actually use this
+        List<String> colors = Permissions.getValues(
+                player,
+                "simplechat.name"
+        );
+
+        return defaultColor;
     }
 
     public void setTabPrefix(Player player) {
         Iterator<? extends Player> players = Bukkit.getOnlinePlayers().iterator();
 
-        Scoreboard sb = player.getScoreboard();
+        Scoreboard board = player.getScoreboard();
         Player target;
         String teamId;
         Team team;
-        String prefix;
-        String suffix;
+        Component prefix;
+        Component suffix;
 
-        sb.getTeams().forEach((t) -> {
+        board.getTeams().forEach((t) -> {
             if(t.getEntries().isEmpty())
                 t.unregister();
         });
         while(players.hasNext()) {
             target = players.next();
             teamId = getTeamId(target);
-            team = sb.getTeam(teamId);
+            team = board.getTeam(teamId);
             if(team == null) {
-                team = sb.registerNewTeam(teamId);
+                team = board.registerNewTeam(teamId);
             }
 
             prefix = getTabPrefix(target);
             suffix = getTabSuffix(target);
 
-            team.setPrefix(prefix);
-            team.setSuffix(suffix);
-            team.setColor(getNameColor(target));
+            team.prefix(prefix);
+            team.suffix(suffix);
+            team.color(getNameColor(target));
             team.addEntry(target.getName());
         }
 
@@ -148,26 +143,26 @@ public class LuckPermsUtil {
         while(players.hasNext()) {
             target = players.next();
             if (target != player) {
-                sb = target.getScoreboard();
+                board = target.getScoreboard();
                 teamId = getTeamId(player);
-                team = sb.getTeam(teamId);
+                team = board.getTeam(teamId);
                 if(team == null) {
-                    team = sb.registerNewTeam(teamId);
+                    team = board.registerNewTeam(teamId);
                 }
 
                 prefix = getTabPrefix(player);
                 suffix = getTabSuffix(player);
 
-                team.setPrefix(prefix);
-                team.setSuffix(suffix);
-                team.setColor(getNameColor(player));
+                team.prefix(prefix);
+                team.suffix(suffix);
+                team.color(getNameColor(player));
                 team.addEntry(player.getName());
             }
         }
     }
 
     private String getTeamId(Player player) {
-        int maxWeight = plugin.getConfig().getInt("maxWeight");
+        int maxWeight = plugin.getConfig().getInt("max_weight");
         int maxWeightLength = Integer.toString(maxWeight).length();
         int weight = getPrimaryGroup(player).getWeight().isPresent() ? getPrimaryGroup(player).getWeight().getAsInt() : 0;
 
