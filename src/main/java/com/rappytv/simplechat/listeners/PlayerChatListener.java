@@ -2,8 +2,12 @@ package com.rappytv.simplechat.listeners;
 
 import com.rappytv.simplechat.SimpleChat;
 import com.rappytv.simplechat.commands.ChatCommand;
+import io.papermc.paper.chat.ChatRenderer;
 import io.papermc.paper.event.player.AsyncChatEvent;
+import net.funoase.sahara.bukkit.util.Colors;
 import net.funoase.sahara.bukkit.util.Permissions;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -12,9 +16,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("ConstantConditions")
-public class PlayerChatListener implements Listener {
+public class PlayerChatListener implements Listener, ChatRenderer {
 
     private static final MiniMessage minimessage = MiniMessage.miniMessage();
     private final SimpleChat plugin;
@@ -49,8 +54,6 @@ public class PlayerChatListener implements Listener {
                 }
             }
         }
-        // Translate color codes
-//        event.setMessage(Colors.translatePlayerCodes(player, event.getMessage(), "chat.format"));
 
         String[] words = message.split(" ");
         ConfigurationSection section = plugin.getConfig().getConfigurationSection("channels");
@@ -78,24 +81,31 @@ public class PlayerChatListener implements Listener {
                                     player,
                                     plugin.getConfig().getString("chat.channel_format")
                             ),
-                            Placeholder.unparsed("name", section.getString("name")),
+                            Placeholder.parsed("name", section.getString("name")),
                             Placeholder.unparsed("player", player.getName()),
-                            Placeholder.unparsed("message", message)
+                            Placeholder.component("message", Colors.translatePlayerCodes(player, message, "simplechat.chat.format"))
                     ));
             }
             return;
         }
 
+        event.renderer(this);
+        event.message(Colors.translatePlayerCodes(player, message, "simplechat.chat.format"));
+    }
+
+    @Override
+    public @NotNull Component render(@NotNull Player player, @NotNull Component displayName, @NotNull Component message, @NotNull Audience audience) {
         boolean margin = player.hasPermission("simplechat.chat.format.margin");
         String marginText = plugin.getConfig().getString("chat.margin");
         String prefix = plugin.getLuckPermsUtil().getPrefix(player);
         String suffix = plugin.getLuckPermsUtil().getSuffix(player);
-        event.message(minimessage.deserialize(
+
+        return minimessage.deserialize(
                 SimpleChat.setPlaceholders(
                         player,
                         plugin.getConfig().getString("chat.message_format")
                 ),
-                Placeholder.unparsed(
+                Placeholder.parsed(
                         "prefix_format",
                         SimpleChat.setPlaceholders(
                                 player,
@@ -103,7 +113,7 @@ public class PlayerChatListener implements Listener {
                         )
                 ),
                 Placeholder.parsed("player_prefix", prefix),
-                Placeholder.unparsed(
+                Placeholder.parsed(
                         "suffix_format",
                         SimpleChat.setPlaceholders(
                                 player,
@@ -112,9 +122,9 @@ public class PlayerChatListener implements Listener {
                 ),
                 Placeholder.parsed("player_suffix", suffix),
                 Placeholder.unparsed("player", player.getName()),
-                Placeholder.unparsed("margin1", margin ? marginText + "\n" : ""),
-                Placeholder.unparsed("margin2", margin ? "\n" + marginText : ""),
-                Placeholder.unparsed("message", message)
-        ));
+                Placeholder.parsed("margin1", margin ? marginText + "\n" : ""),
+                Placeholder.parsed("margin2", margin ? "\n" + marginText : ""),
+                Placeholder.component("message", message)
+        );
     }
 }
