@@ -15,6 +15,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <distributionManagement>
+        <repository>
+            <id>funoase-plugins-simplechat</id>
+            <url>https://repo.funoase.net/plugins</url>
+        </repository>
+    </distributionManagement>
+
     <build>
         <plugins>
             <plugin>
