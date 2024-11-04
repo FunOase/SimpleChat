@@ -8,6 +8,8 @@ channels:
       - '@team'
       - '@t'
 
+prefer_user_metadata: true
+
 chat:
   margin: "<dark_gray>»</dark_gray>"
   prefix_format: '<player_prefix><reset> <dark_gray>|</dark_gray> '
@@ -26,6 +28,9 @@ tab:
   enabled: false
   # -1 to disable updating. Please only use this if you use placeholders which can change over time
   updateInterval: -1
+  # This indicates the highest existing weight in your LuckPerms user/group prefixes.
+  max_weight: 100
+
   header: |-
     ---> Servername <---
   footer: |-
@@ -40,13 +45,6 @@ scoreboard:
     - 'Score 1'
     - 'Score 2'
     - ''
-
-listener:
-  chatOff: '<prefix> Der Chat ist §bdeaktiviert!'
-  enterText: '<prefix> §cBitte gib einen Text an!'
-
-prefer_user_metadata: true
-max_weight: 100
 
 emojis:
   - <3;❤

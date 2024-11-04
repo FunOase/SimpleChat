@@ -171,7 +171,7 @@ public class LuckPermsUtil {
     }
 
     private String getTeamId(Player player) {
-        int maxWeight = plugin.getConfig().getInt("max_weight");
+        int maxWeight = plugin.getConfig().getInt("tab.max_weight");
         int maxWeightLength = Integer.toString(maxWeight).length();
         int weight = getPrimaryGroup(player).getWeight().isPresent() ? getPrimaryGroup(player).getWeight().getAsInt() : 0;
 
