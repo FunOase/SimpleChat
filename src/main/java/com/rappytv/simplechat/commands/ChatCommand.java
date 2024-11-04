@@ -20,13 +20,13 @@ public class ChatCommand extends Command<SimpleChat> {
 
     @Override
     public void execute(CommandSender sender, String prefix, String[] args) {
-        if (!sender.hasPermission("simplechat.manage")) {
+        if (!sender.hasPermission("simplechat.manage.command")) {
             sender.sendMessage(deserializeTranslatable(sender, "sahara.errors.missing_permissions"));
             return;
         }
         switch (args.length > 0 ? args[0].toLowerCase() : "") {
             case "enable" -> {
-                if(!sender.hasPermission("simplechat.chat.manage.toggle")) {
+                if(!sender.hasPermission("simplechat.manage.chat.toggle")) {
                     sender.sendMessage(deserializeTranslatable(sender, "sahara.errors.missing_permissions"));
                     return;
                 }
@@ -41,7 +41,7 @@ public class ChatCommand extends Command<SimpleChat> {
                 }
             }
             case "disable" -> {
-                if(!sender.hasPermission("simplechat.chat.manage.toggle")) {
+                if(!sender.hasPermission("simplechat.manage.chat.toggle")) {
                     sender.sendMessage(deserializeTranslatable(sender, "sahara.errors.missing_permissions"));
                     return;
                 }
@@ -56,7 +56,7 @@ public class ChatCommand extends Command<SimpleChat> {
                 }
             }
             case "reload" -> {
-                if(!sender.hasPermission("simplechat.reload")) {
+                if(!sender.hasPermission("simplechat.manage.reload")) {
                     sender.sendMessage(deserializeTranslatable(sender, "sahara.errors.missing_permissions"));
                     return;
                 }
@@ -72,8 +72,8 @@ public class ChatCommand extends Command<SimpleChat> {
     public List<String> complete(CommandSender sender, String prefix, String[] args) {
         if(args.length == 1) {
             List<String> list = new ArrayList<>();
-            if(sender.hasPermission("simplechat.chat.manage.toggle")) list.addAll(Arrays.asList("enable", "disable"));
-            if(sender.hasPermission("simplechat.reload")) list.add("reload");
+            if(sender.hasPermission("simplechat.manage.chat.toggle")) list.addAll(Arrays.asList("enable", "disable"));
+            if(sender.hasPermission("simplechat.manage.reload")) list.add("reload");
             return tab(args[0], list);
         }
         return null;

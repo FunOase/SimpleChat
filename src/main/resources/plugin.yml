@@ -11,7 +11,7 @@ softdepend:
 
 commands:
   chat:
-    permission: simplechat.manage
+    permission: simplechat.manage.command
   chatclear:
     aliases: [ cc ]
     permission: simplechat.chat.manage.clear
@@ -23,12 +23,12 @@ permissions:
   simplechat.manage.*:
     default: op
     children:
-      - simplechat.manage
-      - simplechat.chat.manage.clear
-      - simplechat.chat.manage.clear.bypass
-      - simplechat.chat.manage.toggle
-      - simplechat.chat.manage.toggle.bypass
-      - simplechat.reload
+      - simplechat.manage.chat.clear
+      - simplechat.manage.chat.clear.bypass
+      - simplechat.manage.chat.toggle
+      - simplechat.manage.chat.toggle.bypass
+      - simplechat.manage.command
+      - simplechat.manage.reload
 
   simplechat.channel.*:
     default: op
@@ -56,17 +56,19 @@ permissions:
     default: op
 
   simplechat.chat.use:
-    default: op
+    default: true
 
-  simplechat.manage:
+  simplechat.manage.chat.clear:
     default: op
-  simplechat.chat.manage.clear:
+  simplechat.manage.chat.clear.bypass:
     default: op
-  simplechat.chat.manage.clear.bypass:
+  simplechat.manage.chat.toggle:
     default: op
-  simplechat.chat.manage.toggle:
+  simplechat.manage.chat.toggle.bypass:
     default: op
-  simplechat.chat.manage.toggle.bypass:
+  simplechat.manage.command:
+    default: op
+  simplechat.manage.reload:
     default: op
 
   simplechat.name.black:
@@ -101,5 +103,3 @@ permissions:
     default: false
   simplechat.name.white:
     default: false
-  simplechat.reload:
-    default: op

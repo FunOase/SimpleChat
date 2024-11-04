@@ -19,7 +19,7 @@ public class ChatClearCommand extends Command<SimpleChat> {
 
     @Override
     public void execute(CommandSender sender, String prefix, String[] args) {
-        if(!sender.hasPermission("simplechat.chat.clear")) {
+        if(!sender.hasPermission("simplechat.manage.chat.clear")) {
             sender.sendMessage(deserializeTranslatable(sender, "sahara.errors.missing_permissions"));
             return;
         }
@@ -30,7 +30,7 @@ public class ChatClearCommand extends Command<SimpleChat> {
         }
 
         for(Player player : Bukkit.getOnlinePlayers()) {
-            if(!player.hasPermission("simplechat.chat.clear.bypass"))
+            if(!player.hasPermission("simplechat.manage.chat.clear.bypass"))
                 player.sendMessage(lines);
             String staff = sender instanceof Player
                     ? sender.getName()
