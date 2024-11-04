@@ -33,11 +33,11 @@ public class EmojiCommand extends Command<SimpleChat> {
         plugin.lp.getUserManager().saveUser(user);
 
         String state = I18n.translate(player, "simplechat.commands.emoji." + (active ? "enabled" : "disabled"));
-        deserializeTranslatable(
+        player.sendMessage(deserializeTranslatable(
                 sender,
                 "simplechat.commands.emoji.success",
-                Placeholder.unparsed("state", state)
-        );
+                Placeholder.parsed("state", state)
+        ));
     }
 
     @Override
