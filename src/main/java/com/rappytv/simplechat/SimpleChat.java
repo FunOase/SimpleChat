@@ -5,7 +5,7 @@ import com.rappytv.simplechat.commands.ChatClearCommand;
 import com.rappytv.simplechat.commands.EmojiCommand;
 import com.rappytv.simplechat.listeners.JoinListener;
 import com.rappytv.simplechat.listeners.PlayerChatListener;
-import com.rappytv.simplechat.listeners.luckperms.UpdateListener;
+import com.rappytv.simplechat.listeners.LuckPermsListener;
 import com.rappytv.simplechat.scoreboard.SidebarScoreboard;
 import com.rappytv.simplechat.scoreboard.TablistScoreboard;
 import com.rappytv.simplechat.util.LuckPermsUtil;
@@ -24,6 +24,7 @@ public final class SimpleChat extends JavaPlugin {
 
     public LuckPerms lp;
     private LuckPermsUtil luckPermsUtil;
+    private LuckPermsListener updateListener;
     private static boolean usingPlaceholderApi = false;
 
     @Override
@@ -44,13 +45,18 @@ public final class SimpleChat extends JavaPlugin {
         if (provider != null) {
             lp = provider;
             getLogger().info("Luckperms successfully loaded!");
-            new UpdateListener(this);
+            updateListener = new LuckPermsListener(this);
         }
         luckPermsUtil = new LuckPermsUtil(this);
         Bukkit.getServicesManager().register(LuckPermsUtil.class, luckPermsUtil, this, ServicePriority.Normal);
         for(Player all : Bukkit.getOnlinePlayers()) {
             luckPermsUtil.setTabPrefix(all);
         }
+    }
+
+    @Override
+    public void onDisable() {
+        if(this.updateListener != null) updateListener.close();
     }
 
     private void registerAll() {
