@@ -163,7 +163,6 @@ public class LuckPermsUtil {
 
                 team.prefix(prefix);
                 team.suffix(suffix);
-                System.out.println(getNameColor(player));
                 team.color(getNameColor(player));
                 team.addEntry(player.getName());
             }
