@@ -16,7 +16,7 @@ chat:
     <name> <dark_gray>|</dark_gray> <aqua><player></aqua> <dark_gray>»</dark_gray> <white><message>
     <dark_gray>&8»</dark_gray>
 tab:
-  default_color: "GRAY"
+  default_color: gray
   prefix: "<player_prefix> <dark_gray>|</dark_gray> "
   suffix: " <dark_gray>[</dark_gray><player_suffix><dark_gray>]</dark_gray>"
 
