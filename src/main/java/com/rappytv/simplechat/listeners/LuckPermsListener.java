@@ -44,7 +44,7 @@ public class LuckPermsListener {
 
         try {
             if (player != null) {
-                plugin.getLuckPermsUtil().setTabPrefix(player);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> plugin.getLuckPermsUtil().setTabPrefix(player));
             }
         } catch (Exception ignored) {
         }
