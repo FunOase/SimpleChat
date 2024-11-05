@@ -13,9 +13,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Iterator;
+import java.util.Collection;
 
 @SuppressWarnings("ConstantConditions")
 public class LuckPermsUtil {
@@ -31,6 +32,7 @@ public class LuckPermsUtil {
         return plugin.lp.getPlayerAdapter(Player.class).getUser(player);
     }
 
+    @NotNull
     public Group getPrimaryGroup(Player player) {
         User user = getUser(player);
         Group primaryGroup = plugin.lp.getGroupManager().getGroup(user.getPrimaryGroup());
@@ -43,6 +45,7 @@ public class LuckPermsUtil {
         return holder.getCachedData().getMetaData().getMetaValue("name_color");
     }
 
+    @NotNull
     public String getPrefix(Player player) {
         boolean preferUserMetaData = plugin.getConfig().getBoolean("prefer_user_metadata");
         CachedMetaData playerData = getUser(player).getCachedData().getMetaData();
@@ -62,6 +65,7 @@ public class LuckPermsUtil {
         return prefix;
     }
 
+    @NotNull
     public String getSuffix(Player player) {
         boolean preferUserMetaData = plugin.getConfig().getBoolean("prefer_user_metadata");
         CachedMetaData playerData = getUser(player).getCachedData().getMetaData();
@@ -97,6 +101,12 @@ public class LuckPermsUtil {
         ) : Component.empty();
     }
 
+    /**
+     * Get a player's name color
+     * @param player The player you want to get the name color of
+     * @return The player's {@link NamedTextColor}
+     */
+    @NotNull
     public NamedTextColor getNameColor(Player player) {
         NamedTextColor defaultColor = NamedTextColor.NAMES.valueOr(
                 plugin.getConfig().getString("tab.default_color").toLowerCase(),
@@ -115,56 +125,58 @@ public class LuckPermsUtil {
         );
     }
 
+    /**
+     * Load the scoreboard for the player. This needs to be executed synchronously
+     * @param player The player you want to load the scoreboard for
+     */
     public void setTabPrefix(Player player) {
-        Iterator<? extends Player> players = Bukkit.getOnlinePlayers().iterator();
+        Collection<? extends Player> players = Bukkit.getOnlinePlayers();
 
         Scoreboard board = player.getScoreboard();
-        Player target;
         String teamId;
         Team team;
-        Component prefix;
-        Component suffix;
 
         board.getTeams().forEach((t) -> {
             if(t.getEntries().isEmpty())
                 t.unregister();
         });
-        while(players.hasNext()) {
-            target = players.next();
+        // Add all players to own scoreboard
+        for(Player target : players) {
             teamId = getTeamId(target);
             team = board.getTeam(teamId);
             if(team == null) {
                 team = board.registerNewTeam(teamId);
             }
 
-            prefix = getTabPrefix(target);
-            suffix = getTabSuffix(target);
-
-            team.prefix(prefix);
-            team.suffix(suffix);
+            team.prefix(getTabPrefix(target));
+            team.suffix(getTabSuffix(target));
             team.color(getNameColor(target));
             team.addEntry(target.getName());
         }
 
-        players = Bukkit.getOnlinePlayers().iterator();
+        // Add player to scoreboard of other players
+        String name = player.getName();
+        Component prefix = getTabPrefix(player);
+        Component suffix = getTabSuffix(player);
+        NamedTextColor color = getNameColor(player);
 
-        while(players.hasNext()) {
-            target = players.next();
+        for(Player target : players) {
             if (target != player) {
                 board = target.getScoreboard();
+                board.getTeams().forEach((t) -> {
+                    if(t.getEntries().isEmpty())
+                        t.unregister();
+                });
                 teamId = getTeamId(player);
                 team = board.getTeam(teamId);
                 if(team == null) {
                     team = board.registerNewTeam(teamId);
                 }
 
-                prefix = getTabPrefix(player);
-                suffix = getTabSuffix(player);
-
                 team.prefix(prefix);
                 team.suffix(suffix);
-                team.color(getNameColor(player));
-                team.addEntry(player.getName());
+                team.color(color);
+                team.addEntry(name);
             }
         }
     }
@@ -172,7 +184,7 @@ public class LuckPermsUtil {
     private String getTeamId(Player player) {
         int maxWeight = plugin.getConfig().getInt("tab.max_weight");
         int maxWeightLength = Integer.toString(maxWeight).length();
-        int weight = getPrimaryGroup(player).getWeight().isPresent() ? getPrimaryGroup(player).getWeight().getAsInt() : 0;
+        int weight = getPrimaryGroup(player).getWeight().orElse(0);
 
         String id = ("0000" + (maxWeight - weight));
         String slicedId = id.substring(id.length() - maxWeightLength);
