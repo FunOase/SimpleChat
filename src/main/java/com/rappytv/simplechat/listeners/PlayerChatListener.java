@@ -11,15 +11,21 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.*;
+import java.util.UUID;
+
 @SuppressWarnings("ConstantConditions")
-public class PlayerChatListener implements Listener, ChatRenderer {
+public class PlayerChatListener implements Listener, ChatRenderer, PluginMessageListener {
 
     private static final MiniMessage minimessage = MiniMessage.miniMessage();
     private final SimpleChat plugin;
@@ -73,19 +79,18 @@ public class PlayerChatListener implements Listener, ChatRenderer {
                 player.sendMessage(ChatCommand.deserializeTranslatable(player, "simplechat.listener.enter_text"));
                 return;
             }
+            boolean isBungee = section.getBoolean("bungee");
             message = message.substring(words[0].length() + 1);
-            for(Player target : Bukkit.getOnlinePlayers()) {
-                if(Permissions.hasExactPermission(target, "simplechat.chat.*") || Permissions.hasExactPermission(target, permission))
-                    target.sendMessage(minimessage.deserialize(
-                            SimpleChat.setPlaceholders(
-                                    player,
-                                    plugin.getConfig().getString("chat.channel_format")
-                            ),
-                            Placeholder.parsed("name", section.getString("name")),
-                            Placeholder.unparsed("player", player.getName()),
-                            Placeholder.component("message", Colors.translatePlayerCodes(player, message, "simplechat.chat.format"))
-                    ));
-            }
+            Component component = minimessage.deserialize(
+                    SimpleChat.setPlaceholders(
+                            player,
+                            plugin.getConfig().getString("chat.channel_format")
+                    ),
+                    Placeholder.parsed("name", section.getString("name")),
+                    Placeholder.unparsed("player", player.getName()),
+                    Placeholder.component("message", Colors.translateCodes(message))
+            );
+            broadcastChannelMessage(player, sectionName, JSONComponentSerializer.json().serialize(component), isBungee);
             return;
         }
 
@@ -126,5 +131,57 @@ public class PlayerChatListener implements Listener, ChatRenderer {
                 Placeholder.parsed("margin2", margin ? "\n" + marginText : ""),
                 Placeholder.component("message", message)
         );
+    }
+
+    @Override
+    public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte[] message) {
+        if(!channel.equals("BungeeCord")) return;
+
+        try {
+            DataInputStream in = new DataInputStream(new ByteArrayInputStream(message));
+            String subchannel = in.readUTF();
+            if(!subchannel.equals("SimpleChat")) return;
+
+            short length = in.readShort();
+            byte[] msgbytes = new byte[length];
+            in.readFully(msgbytes);
+
+            DataInputStream msgin = new DataInputStream(new ByteArrayInputStream(msgbytes));
+            String targetChannel = msgin.readUTF();
+            String playerMessage = msgin.readUTF();
+            broadcastChannelMessage(player, targetChannel, playerMessage, false);
+        } catch (IOException ignored) {}
+    }
+
+    private void broadcastChannelMessage(Player sender, String channel, String component, boolean bungee) {
+        if(bungee) {
+            try {
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                DataOutputStream out = new DataOutputStream(stream);
+
+                out.writeUTF("Forward");
+                out.writeUTF("ALL");
+                out.writeUTF("SimpleChat");
+
+                ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
+                DataOutputStream msgout = new DataOutputStream(msgbytes);
+                msgout.writeUTF(sender.getUniqueId().toString());
+                msgout.writeUTF(component);
+
+                out.writeShort(msgbytes.toByteArray().length);
+                out.write(msgbytes.toByteArray());
+
+                sender.sendPluginMessage(plugin, "BungeeCord", stream.toByteArray());
+            } catch (IOException ignored) {}
+        }
+        ConfigurationSection section = plugin.getConfig().getConfigurationSection("channels." + channel);
+        if(section == null) return;
+        String permission = section.getString("permission");
+        Component message = JSONComponentSerializer.json().deserialize(component);
+        for(Player target : Bukkit.getOnlinePlayers()) {
+            if(Permissions.hasExactPermission(target, "simplechat.chat.*") || Permissions.hasExactPermission(target, permission))
+                target.sendMessage(message);
+        }
+        plugin.getServer().getConsoleSender().sendMessage(message);
     }
 }
