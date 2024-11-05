@@ -3,6 +3,8 @@ channels:
     name: '<red><bold>@TEAM</bold></red>'
     # Note: The player needs to have the permission or simplechat.channel.* EXPLICITLY set!
     permission: simplechat.channel.team
+    # Whether to send this to all BungeeCord subservers or only the current server
+    bungee: false
     # Don't use spaces
     triggers:
       - '@team'
