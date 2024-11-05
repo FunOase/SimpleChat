@@ -59,12 +59,17 @@ public final class SimpleChat extends JavaPlugin {
     @Override
     public void onDisable() {
         if(this.updateListener != null) updateListener.close();
+        Bukkit.getMessenger().unregisterOutgoingPluginChannel(this, "BungeeCord");
+        Bukkit.getMessenger().unregisterIncomingPluginChannel(this, "BungeeCord");
     }
 
     private void registerAll() {
         PluginManager pm = Bukkit.getPluginManager();
+        PlayerChatListener chatListener = new PlayerChatListener(this);
         pm.registerEvents(new JoinListener(this), this);
-        pm.registerEvents(new PlayerChatListener(this), this);
+        pm.registerEvents(chatListener, this);
+        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        Bukkit.getMessenger().registerIncomingPluginChannel(this, "BungeeCord", chatListener);
 
         new ChatCommand("chat", this).register();
         new ChatClearCommand("chatclear", this).register();
