@@ -13,7 +13,6 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.serializer.json.JSONComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,7 +21,6 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
-import java.util.UUID;
 
 @SuppressWarnings("ConstantConditions")
 public class PlayerChatListener implements Listener, ChatRenderer, PluginMessageListener {
@@ -179,7 +177,7 @@ public class PlayerChatListener implements Listener, ChatRenderer, PluginMessage
         String permission = section.getString("permission");
         Component message = JSONComponentSerializer.json().deserialize(component);
         for(Player target : Bukkit.getOnlinePlayers()) {
-            if(Permissions.hasExactPermission(target, "simplechat.chat.*") || Permissions.hasExactPermission(target, permission))
+            if(Permissions.hasExactPermission(target, "simplechat.channel.*") || Permissions.hasExactPermission(target, permission))
                 target.sendMessage(message);
         }
         plugin.getServer().getConsoleSender().sendMessage(message);
