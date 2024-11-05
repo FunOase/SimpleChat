@@ -147,6 +147,8 @@ public class PlayerChatListener implements Listener, ChatRenderer, PluginMessage
             DataInputStream msgin = new DataInputStream(new ByteArrayInputStream(msgbytes));
             String targetChannel = msgin.readUTF();
             String playerMessage = msgin.readUTF();
+            long sentAt = msgin.readLong();
+            if(System.currentTimeMillis() > sentAt + 5000) return;
             broadcastChannelMessage(player, targetChannel, playerMessage, false);
         } catch (IOException ignored) {}
     }
@@ -165,6 +167,7 @@ public class PlayerChatListener implements Listener, ChatRenderer, PluginMessage
                 DataOutputStream msgout = new DataOutputStream(msgbytes);
                 msgout.writeUTF(channel);
                 msgout.writeUTF(component);
+                msgout.writeLong(System.currentTimeMillis());
 
                 out.writeShort(msgbytes.toByteArray().length);
                 out.write(msgbytes.toByteArray());
