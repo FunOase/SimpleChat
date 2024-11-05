@@ -163,7 +163,7 @@ public class PlayerChatListener implements Listener, ChatRenderer, PluginMessage
 
                 ByteArrayOutputStream msgbytes = new ByteArrayOutputStream();
                 DataOutputStream msgout = new DataOutputStream(msgbytes);
-                msgout.writeUTF(sender.getUniqueId().toString());
+                msgout.writeUTF(channel);
                 msgout.writeUTF(component);
 
                 out.writeShort(msgbytes.toByteArray().length);
