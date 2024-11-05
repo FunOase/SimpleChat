@@ -7,7 +7,7 @@
     <name>SimpleChat</name>
     <groupId>com.rappytv.simplechat</groupId>
     <artifactId>SimpleChat</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <properties>
