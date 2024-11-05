@@ -7,7 +7,7 @@
     <name>SimpleChat</name>
     <groupId>com.rappytv.simplechat</groupId>
     <artifactId>SimpleChat</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -88,6 +88,11 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-minimessage</artifactId>
+            <version>4.17.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-gson</artifactId>
             <version>4.17.0</version>
         </dependency>
         <dependency>
