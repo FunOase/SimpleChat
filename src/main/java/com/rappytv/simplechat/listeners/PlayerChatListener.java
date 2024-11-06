@@ -42,7 +42,7 @@ public class PlayerChatListener implements Listener, ChatRenderer, PluginMessage
             event.setCancelled(true);
             return;
         }
-        if(!ChatCommand.isEnabled() && !player.hasPermission("simplechat.chat.manage.toggle.bypass")) {
+        if(!ChatCommand.isEnabled() && !player.hasPermission("simplechat.manage.chat.toggle.bypass")) {
             player.sendMessage(ChatCommand.deserializeTranslatable(player, "simplechat.listener.chat_disabled"));
             event.setCancelled(true);
             return;
