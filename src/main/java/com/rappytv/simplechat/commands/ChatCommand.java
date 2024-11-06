@@ -52,7 +52,7 @@ public class ChatCommand extends Command<SimpleChat> {
 
                 enabled = false;
                 for(Player all : Bukkit.getOnlinePlayers()) {
-                    all.sendMessage(deserializeTranslatable(sender, "simplechat.commands.chat.disable.already"));
+                    all.sendMessage(deserializeTranslatable(sender, "simplechat.commands.chat.disable.broadcast"));
                 }
             }
             case "reload" -> {
