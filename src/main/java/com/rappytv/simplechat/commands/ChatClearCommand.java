@@ -20,7 +20,7 @@ public class ChatClearCommand extends Command<SimpleChat> {
     @Override
     public void execute(CommandSender sender, String prefix, String[] args) {
         if(!sender.hasPermission("simplechat.manage.chat.clear")) {
-            sender.sendMessage(deserializeTranslatable(sender, "sahara.errors.missing_permissions"));
+            sender.sendMessage(I18n.component(sender, "sahara.errors.missing_permissions", true));
             return;
         }
 
@@ -35,9 +35,10 @@ public class ChatClearCommand extends Command<SimpleChat> {
             String staff = sender instanceof Player
                     ? sender.getName()
                     : I18n.translate(player, "simplechat.commands.clear.console");
-            player.sendMessage(deserializeTranslatable(
+            player.sendMessage(I18n.component(
                     sender,
                     "simplechat.commands.clear.broadcast",
+                    true,
                     Placeholder.unparsed("player", staff)
             ));
         }

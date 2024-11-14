@@ -4,6 +4,7 @@ import com.rappytv.simplechat.SimpleChat;
 import com.rappytv.simplechat.commands.ChatCommand;
 import io.papermc.paper.chat.ChatRenderer;
 import io.papermc.paper.event.player.AsyncChatEvent;
+import net.funoase.sahara.bukkit.i18n.I18n;
 import net.funoase.sahara.bukkit.util.Colors;
 import net.funoase.sahara.bukkit.util.Permissions;
 import net.kyori.adventure.audience.Audience;
@@ -38,12 +39,12 @@ public class PlayerChatListener implements Listener, ChatRenderer, PluginMessage
         String message = ((TextComponent) event.originalMessage()).content();
 
         if(!player.hasPermission("simplechat.chat.use")) {
-            player.sendMessage(ChatCommand.deserializeTranslatable(player, "simplechat.listener.missing_permissions"));
+            player.sendMessage(I18n.component(player, "simplechat.listener.missing_permissions", true));
             event.setCancelled(true);
             return;
         }
         if(!ChatCommand.isEnabled() && !player.hasPermission("simplechat.manage.chat.toggle.bypass")) {
-            player.sendMessage(ChatCommand.deserializeTranslatable(player, "simplechat.listener.chat_disabled"));
+            player.sendMessage(I18n.component(player, "simplechat.listener.chat_disabled", true));
             event.setCancelled(true);
             return;
         }
@@ -74,7 +75,7 @@ public class PlayerChatListener implements Listener, ChatRenderer, PluginMessage
             if(!hasPermission || !section.getStringList("triggers").contains(words[0])) continue;
             event.setCancelled(true);
             if(words.length < 2) {
-                player.sendMessage(ChatCommand.deserializeTranslatable(player, "simplechat.listener.enter_text"));
+                player.sendMessage(I18n.component(player, "simplechat.listener.enter_text", true));
                 return;
             }
             boolean isBungee = section.getBoolean("bungee");

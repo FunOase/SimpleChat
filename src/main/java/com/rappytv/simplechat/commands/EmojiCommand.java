@@ -20,11 +20,11 @@ public class EmojiCommand extends Command<SimpleChat> {
     @Override
     public void execute(CommandSender sender, String prefix, String[] args) {
         if(!(sender instanceof Player player)) {
-            sender.sendMessage(deserializeTranslatable(sender, "sahara.errors.client_only"));
+            sender.sendMessage(I18n.component(sender, "sahara.errors.client_only", true));
             return;
         }
         if(!player.hasPermission("simplechat.emojis.toggle")) {
-            player.sendMessage(deserializeTranslatable(sender, "sahara.errors.missing_permissions"));
+            player.sendMessage(I18n.component(sender, "sahara.errors.missing_permissions", true));
             return;
         }
         boolean active = !player.hasPermission("simplechat.emojis");
@@ -33,9 +33,10 @@ public class EmojiCommand extends Command<SimpleChat> {
         plugin.lp.getUserManager().saveUser(user);
 
         String state = I18n.translate(player, "simplechat.commands.emoji." + (active ? "enabled" : "disabled"));
-        player.sendMessage(deserializeTranslatable(
+        player.sendMessage(I18n.component(
                 sender,
                 "simplechat.commands.emoji.success",
+                true,
                 Placeholder.parsed("state", state)
         ));
     }
